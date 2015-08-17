@@ -80,6 +80,27 @@
 								<!-- 图片选择DOM结构 -->
 							</div>
 						</div>
+
+						<div class="form-group col-lg-12 col-md-12 clearfix js_frm_gp_sku">
+							<label for="" class="control-label col-lg-2 col-md-2">运费模板</label>
+							<div class="col-lg-10 col-md-10">
+								<select name="template_id" data-am-selected>
+									<option value="-1">请选择运费模板</option>
+									<volist name="templates" id="t" >
+										<option value="{$t.id}"
+												<if condition="$vo['template_id'] eq $t['id']" >
+													selected="selected"
+												</if>
+												>
+											{$t.name}
+										</option>
+									</volist>
+								</select>
+								<span class="help-block">请选择运费模板</span>
+							</div>
+						</div>
+
+
 						<div class="form-group col-lg-12 col-md-12 clearfix js_frm_gp_sku">
 							<label for="" class="control-label col-lg-2 col-md-2">微信价</label>
 							<div class="col-lg-10 col-md-10">

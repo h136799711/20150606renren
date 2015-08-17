@@ -53,16 +53,20 @@
 	}
 
 	function removeImg(){
-		alert(imgIds);
-		/*$.ajax({
-			url:"{:U('Admin/File/del')}",
-			data:{
-				'imgIds':imgIds,
-			},
-			success:function(data){
+		//alert(imgIds);
+		if(confirm("你真的要删除图片吗？如果有商品正在使用将无法正常显示！！！")){
+			$.ajax({
+				url:"{:U('Admin/File/del')}",
+				data:{
+					'imgIds':imgIds,
+				},
+				success:function(data){
+					console.info(data);
+					location.reload();
+				}
+			})
+		}
 
-			}
-		})*/
 	}
 	window.wxuploadimg = (function() {
 		var pager = {

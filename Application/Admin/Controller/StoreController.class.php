@@ -93,6 +93,7 @@ class StoreController extends AdminController{
 			$desc = I('post.desc','');
 			$type = I('post.type','');
 			$logo = I('post.logo','');
+			$free_shipping=I('post.free_shipping','');
 			$banner = I('post.banner','');
 			$wxno = I('post.wxno','');
 			$cate_id = I('post.store_type','');
@@ -120,6 +121,7 @@ class StoreController extends AdminController{
 				'name'=>$name,
 				'desc'=>$desc,
 				'logo'=>$logo,
+				'free_shipping'=>$free_shipping,
 				'banner'=>$banner,
 				'isopen'=>0,
 				'cate_id'=>$cate_id,
@@ -172,6 +174,7 @@ class StoreController extends AdminController{
 			$wxno = I('post.wxno','');
 			$type = I('post.type','');
 			$logo = I('post.logo','');
+			$free_shipping = I('post.free_shipping','');
 			$banner = I('post.banner','');
 			$cate_id = I('post.store_type','');
 			$wxnum = I('post.weixin_number','');
@@ -193,6 +196,7 @@ class StoreController extends AdminController{
 				'name'=>$name,
 				'desc'=>$desc,
 				'logo'=>$logo,
+				'free_shipping'=>$free_shipping,
 				'latitude'=>$lat,
 				'longitude'=>$lng,
 				'banner'=>$banner,

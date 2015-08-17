@@ -1,0 +1,375 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+    <!--<script type="text/javascript" charset="utf-8" src="__CDN__/ueditor/1.4.3/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__CDN__/ueditor/1.4.3/ueditor.all.min.js"> </script>-->
+
+   <link type="text/css" rel="stylesheet" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css" />
+    <link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
+    <script type="text/javascript" src="__CDN__/amazeui/2.3.0/js/amazeui.min.js"></script>
+
+    <style type="text/css">
+        .select2-container--default .select2-selection--single .select2-selection__placeholder{
+            color:#E7E7E7;
+        }
+        .select2-container--default .select2-selection--single {
+            background-color: #2780e3;
+            border: 0px solid #aaa;
+            border-radius: 4px;
+        }
+        .select2-container{
+            background: #2780e3;
+            color: #fff;
+            padding: 2px;
+            margin: 0px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #F5F5F5;
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field{
+            color:#444;
+        }
+        .wxnumber-item{
+            background: #DFC2C2;
+            width: auto;
+            display: inline-block;
+            padding: 5px;
+            margin: 5px;
+        }
+        .wxnumber-item i.fa{
+            margin: 0px 5px;
+            cursor: pointer;
+        }
+
+        .modal-backdrop,.modal-dialog {
+            z-index: 0;
+        }
+        .tangram-suggestion-main{
+            z-index: 123456789;
+        }
+
+        table.am-table{
+            background: white;width:70%;
+        }
+        table.am-table th{
+
+            text-align: center;
+        }
+        .a_add:hover{text-decoration: none;color: #FF9508;font-size: 12px}
+        .a_add:active{text-decoration: none;color: #FF9508;font-size: 12px}
+        .a_add:visited{text-decoration: none;color: #FF9508;font-size: 12px}
+        .a_add:link{text-decoration: none;color: #FF9508;font-size: 12px}
+        .label_province,.label_city{font-weight: 100;font-size: 12px;cursor:pointer}
+        .span_province{background: lightyellow;border: 1px solid #FF9508;border-bottom: none;position: relative;z-index:2}
+        .b_num{font-weight: 100;font-size: 12px;color:#FF9508}
+    </style>
+
+</block>
+
+<block name="area_body">
+    {:W('Menus/topbar')}
+    <div class="admin-main container-fluid">
+        {:W('Menus/left')}
+        <div class="admin-main-content">
+            {:W('Menus/breadcrumb')}
+
+            <!-- 带验证 form -->
+            <form class="form-horizontal well validateForm" >
+                <fieldset>
+                    <legend>
+                        添加运费模板</legend>
+                    <div class="form-group">
+                        <label for="inputtitle" class="col-md-2 col-lg-2 control-label">模板名称：</label>
+                        <div class="col-md-10 col-lg-10">
+                            <input type="text" class="required form-control input-short" name="name" id="inputtitle" placeholder="请输入模板名称">
+                            <div class="help-block">(模板名称)</div>
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="form-group">
+                        <label for="inputtitle" class="col-md-2 col-lg-2 control-label">配送类型</label>
+                        <div class="col-md-10 col-lg-10">
+                            <select name="position" class="form-control  input-normal" >
+                                <option value="0">商家配送</option>
+                                <option value="1">用户自提</option>
+                            </select>
+                            <div class="help-block">(选择类型)</div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="form-group">
+                        <label for="inputtitle" class="col-md-2 col-lg-2 control-label">物流公司</label>
+                        <div class="col-md-10 col-lg-10">
+                            <select name="company" class="form-control  input-normal" >
+                                {:W("Partials/datatree",array(getDatatree('OGISTICS_COMPANY'),true))}
+                            </select>
+                            <div class="help-block">(选择物流)</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputservice_phone" class="col-md-2 col-lg-2 control-label">配送区域设置</label>
+                        <div class="col-md-10 col-lg-10">
+                            <table class="am-table am-table-bordered" id="table_address" style="">
+
+                                <thead>
+                                <tr>
+                                    <th style="width:70%">运送到</th>
+                                    <th>运费</th>
+                                    <th>管理</th>
+                                    <th style='display: none'></th>
+                                </tr>
+                                </thead>
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <td>全国 [默认运费]</td>
+                                    <td style="text-align: center"><input name='price' size='5' value="0" style="text-align: center"/></td>
+                                    <td style="text-align: center"></td>
+                                    <td style='display: none'>0</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="help-block"><a href="javascript:void(0)" class="a_add"  data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 450, height:480}"><i class="am-icon-plus-circle"></i>&nbsp;新增配送区域</a><b style="font-size: 12px;color:red;margin-left: 10px">注：未设置的地区将按全国默认运费计算</b></div>
+
+                            <div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+                                <div class="am-modal-dialog" style="background: #c3c3c3">
+                                    <div class="am-modal-hd" style="text-align: left;font-size:15px;font-weight:bold;padding-top:5px;border-bottom: 1px solid #ccc">选择区域
+                                        <a href="javascript: void(0)" id="a_close" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                                    </div>
+                                    <div class="am-modal-bd" style="text-align: left;line-height: 20px">
+                                        <volist name="provinceList" id="pl" key="i">
+                                            <span>
+                                                <span class="province_span" style=""><input name="provinces" id="province_{$i}" value="{$pl.provinceid}" style="margin-left: 8px" type="checkbox"/><label for="province_{$i}" class="label_province">{$pl.province}</label>
+                                                    <b class="b_num"></b>
+
+                                                </span>
+                                                <div class="div_city"  style="background: lightyellow;display:none;width:300px;position:absolute; padding: 10px;border:1px solid #FF9508;z-index:1;margin-top: -10px">
+                                                   <volist name="pl.citys" id="c" key="j">
+                                                       <span>
+                                                       <input type='checkbox' name='citys' onclick='checkCity(this)' id='city_{$i}_{$j}' value='{$c.cityid}' style='margin-left: 8px'/>
+                                                       <label for='city_{$i}_{$j}' class='label_city'>{$c.city}</label>
+                                                       <if condition="$j%2 eq 0">
+                                                           <br />
+                                                       </if>
+                                                       </span>
+                                                   </volist>
+                                                </div>
+                                                <if condition="$i%4 eq 0">
+                                                    <br />
+                                                </if>
+                                            </span>
+                                        </volist>
+                                       <!-- <div class="div_city" style="background: lightyellow;width:300px;position:absolute;display: none; padding: 10px;border:1px solid #FF9508;z-index:1"></div>-->
+                                        <br /><b style="font-size:13px;">当前已选择:</b>
+                                        <div id="div_city_list" style="width: 100%;background:white;height:100px;overflow: scroll;padding: 10px;font-size: 12px">
+
+                                        </div>
+                                        <button type="button" class="am-btn am-btn-secondary" style="margin-left:330px;margin-top: 20px;" onclick="addAddress()">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <label for="btns" class="col-md-2 col-lg-2 control-label">&nbsp;</label>
+                        <div class="col-lg-10 col-md-10">
+                           <!-- <a target-form="validateForm" class="ajax-post btn btn-primary" onclick="return getData();" href="{:U('Admin/Freight/add')}" autofocus="autofocus"><i class="fa fa-save"></i> {:L('BTN_SAVE')}</a>-->
+                            <a  class="btn btn-primary" onclick="toSubmit()"  autofocus="autofocus" ><i class="fa fa-save"></i> {:L('BTN_SAVE')}</a>
+                            <a class="btn btn-default" href="{:U('Admin/Freight/index')}"><i class="fa fa-times-circle"></i> {:L('BTN_CANCEL')}</a>
+                        </div>
+                    </div>
+
+
+                </fieldset>
+            </form>
+            <!-- form -->
+
+            <script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.min.js"></script>
+            <script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
+
+            <script type="text/javascript">
+                var province_k=-1;
+                var citys=new Array();
+                var cityids=new Array();
+                $(function(){
+
+                    $('.province_span').mouseover(function(i){
+
+                        $(this).addClass('span_province');
+                        /**
+                         * 本想使用ajax的，
+                         * 但加载太慢，
+                         * 会延迟，
+                         * 用户体验不好
+                         */
+                        $(this).parent().find('.div_city').css('left',$(this).position().left);
+                        $(this).parent().find('.div_city').css('top',$(this).position().top+30);
+                        $(this).parent().find('.div_city').show();
+                     //  alert($(this).index($('.province_span')));
+                        province_k=$('.province_span').index($(this));
+
+
+                       //alert($('#province_'+i).val());
+
+                    });
+
+                    $('.province_span').mouseout(function(){
+                        $(this).removeClass('span_province');
+                        $(".div_city").hide();
+                        //$(".div_city").empty();
+                    })
+
+                    $(".div_city").mouseover(function(){
+                        $(this).show();
+                        $('.province_span').eq(province_k).addClass('span_province');
+                    });
+
+                    $(".div_city").mouseout(function(){
+                        $(this).hide();
+                        $('.province_span').eq(province_k).removeClass('span_province');
+                        //$(".div_city").empty();
+                    });
+
+
+                    $("input[name='provinces']").click(function(){
+                        if($(this).prop('checked')){
+                            var cc=$(this).parent().parent().find("input[name='citys']");
+                            cc.prop("checked",true);
+                            $(this).parent().find(".b_num").html("("+cc.size()+")");
+                        }else{
+                            $(this).parent().parent().find("input[name='citys']").prop("checked",false);
+                            $(this).parent().find(".b_num").html("");
+                        }
+                        checkAllCity();
+                    });
+
+                })
+
+
+                function checkCity(city){
+
+                   if($(city).prop("checked")){
+
+                       var count= $(city).parent().parent().find("input:checked").size();
+                       $('.province_span').eq(province_k).find('input').prop('checked',true);
+                       $('.province_span').eq(province_k).find('.b_num').html("("+count+")");
+                    }else{
+                       var count= $(city).parent().parent().find("input:checked").size();
+                       if(count==0){
+                           $('.province_span').eq(province_k).find('input').prop('checked',false);
+                           $('.province_span').eq(province_k).find('.b_num').html("");
+                       }else{
+                           $('.province_span').eq(province_k).find('.b_num').html("("+count+")");
+                       }
+                    }
+
+                    checkAllCity();
+                }
+                var i_count=0;
+                function addAddress(){
+                    if(citys.length!=0){
+                        $("#table_address tbody").append("<tr class='tr_address_"+i_count+"'><td>"+citys.join(",")+"</td><td style='text-align: center'><input name='price' size='5' value='0' style='text-align: center'/></td><td style='text-align: center'><i class='am-icon-trash' style='cursor:pointer;' onclick='removeAddress("+i_count+")'></i></td><td style='display: none'>"+cityids.join(",")+"</td></tr>");
+                        citys=new Array();
+                        cityids=new Array();
+                        $("#div_city_list").html('');
+                        i_count=i_count+1;
+                        $("input[type='checkbox']").prop('checked',false);
+                        $(".b_num").html('');
+                    }
+                    $("#a_close").click();//关闭模态窗口
+                }
+
+                function removeAddress(r){
+                    //alert(r);
+                    $("#table_address tbody tr").remove('.tr_address_'+r);
+                }
+
+                /**
+                 * 获取当前被选中的城市信息
+                 */
+                function checkAllCity(){
+                    citys=new Array();
+                    cityids=new Array();
+                    $("input[name='citys']:checked").each(function(){
+                        cityids.push($(this).val());
+                        citys.push($(this).parent().find("label").html());
+                    });
+
+                    //alert(citys);
+                    $("#div_city_list").html(citys.join(","));
+                }
+
+                $("input[name='price']").change(function(){
+                    if(isNaN($(this).val())){
+                        $(this).val(0);
+                    }
+                });
+
+                /**
+                 * 提交
+                 */
+                function toSubmit(){
+                    if($("input[name='name']").val().trim()==""){
+                        alert('模板名称不能为空');
+                        return;
+                    }
+                    var cityInfos="";  //信息
+                    $("#table_address tbody tr").each(function(){
+                        cityInfos+=groupInfo($(this))+";";
+                    });//全国
+                   // alert(groupInfo(quanguo));
+                    //alert(cityInfos);
+
+                    $.ajax({
+                        url:"{:U('Admin/Freight/add')}",
+                        type:'post',
+                        data:{
+                            'name':$("input[name='name']").val().trim(),
+                            'company':$("select[name='company']").val(),
+                            'cityInfos':cityInfos
+                        },
+                        success:function(info){
+                            alert(info.info);
+                            window.location.href="{:U('Admin/Freight/index')}";
+                            //console.info(info);
+                        }
+                    })
+                    //alert("点你妹");
+                }
+
+                //组织数据
+                function groupInfo(info){
+                    var cityInfo="";
+                    cityInfo+=info.find('td').eq(3).html().trim()+":";
+                    cityInfo+=info.find('td').eq(0).html().trim()+":";
+                    cityInfo+=info.find('td').eq(1).find('input').val();
+                    return cityInfo;
+                }
+
+            </script>
+
+
+
+        </div>
+        <!-- END admin-main-content -->
+    </div>
+    <!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+
+    <script type="text/javascript">
+
+    </script>
+</block>

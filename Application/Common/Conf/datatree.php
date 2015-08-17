@@ -25,6 +25,8 @@ return array(
 		'INDEX_4_ACTIVTIY'=>19,//首页4格活动
         'ADVERT_POSITION'=>31,//广告父类
         'SHOP_INDEX_ADVERT'=>32,//首页广告
+
+		'OGISTICS_COMPANY'=>35,//物流
         
         //以下为佣金出入情况
         //'commission'

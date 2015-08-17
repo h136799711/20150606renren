@@ -136,7 +136,7 @@
 									</div>
 									<div class="am-text-truncate am-fl am-link-muted am-text-left">{$item['sku_desc']['sku_desc']}
 									</div>
-								<div class="am-fl"><span class="am-fl am-text-danger ">¥<span class="js_item_total_price">{:($item['price']*$item['count']/100.0)}</span></span><span class="am-fr js_item_cnt">x{$item.count}</span></div>
+								<div class="am-fl"><span class="am-fl am-text-danger ">¥<span class="js_item_total_price">{:($item['price']*$item['count']/100.0)}</span></span><span class="am-fr js_item_cnt">x{$item.count}</span><br />运费<span style="color:green">￥{$item['post_price']}</span></div>
 							</div>
             				</div>
             				
@@ -148,7 +148,16 @@
 	                    -->
 	            		<div class="express am-cf  am-padding-sm">
 						<div class="am-fl">配送方式</div>
-						<div class="am-link-muted am-fr">快递<eq name="vo.post_price" value="0">免邮<else/>{:number_format($vo['post_price'],1)} 元</eq> </div>
+						<!--<div class="am-link-muted am-fr">快递<eq name="vo.post_price" value="0">免邮<else/>{:number_format($vo['post_price'],1)} 元</eq> </div>-->
+						<div class="am-link-muted am-fr">
+							<eq name="freights" value="-1">免运费
+
+							<else/>
+								总运费<eq name="freights" value="0"><else/><b style="color: red">{:number_format($freights,1)}</b>元</eq>
+
+							</eq>
+
+						</div>
 					</div>
 					
 	            		<!--

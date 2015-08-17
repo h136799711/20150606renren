@@ -143,18 +143,14 @@ class FileController extends AdminController{
     }
 
 
-    /**
-     * 上传文件
-     */
-    public function uploadfile(){
-        dump();
-    }
 
     /**
-     * 图片上传补做
+     * 图片删除
      */
     public function del(){
         $imgIds=I("imgIds",-1);
+
+
         if($imgIds!=-1){
             $map=array(
                 'id'=>array(
@@ -162,14 +158,22 @@ class FileController extends AdminController{
                 )
             );
             $result=apiCall(UserPictureApi::QUERY_NO_PAGING,array($map));
-
-            /*foreach($result['info'] as $v){
-                unlink($v['path']);
-            }*/
             $result=apiCall(UserPictureApi::DELETE,array($map));
-            if($result['status']){
+            /*if($result['status']){
                 $this->success('删除成功');
+            }*/
+            foreach($result['info'] as $v){
+                $result =unlink('.'.$v['path']);
+                if ($result) {
+                   // echo '蚊子赶走了';
+                    $this->success('删除成功'.'.'.$v['path']);
+                } else {
+                    $this->success('删除失败');
+                   // echo '无法赶走';
+                }
+               // unlink();
             }
+
         }
     }
 	

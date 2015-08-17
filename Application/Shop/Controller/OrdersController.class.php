@@ -8,6 +8,7 @@
 
 namespace Shop\Controller;
 use Admin\Api\AddonsApi;
+use Admin\Api\FreightTemplateApi;
 use Shop\Api\AddressApi;
 use Shop\Api\OrderCommentApi;
 use Shop\Api\OrdersApi;
@@ -255,6 +256,7 @@ class OrdersController extends ShopController {
             //dump($p_id_arr);
             //获取商品信息
             $product_list = $this -> getProductList($p_id_arr);
+
             //获取商品SKU信息
             unset($map['id']);
             array_push($sku_id_arr, -1);
@@ -283,14 +285,18 @@ class OrdersController extends ShopController {
             $all_express = 0.0;
             $tmp_store = array();
             //遍历商品列表
-            //dump($product_list);
+
 
             foreach ($product_list as &$vo) {
 
+                //dump($vo['template_id']);
                 //
                 $entity = array('p_id' => $vo['id'], 'has_sku' => $vo['has_sku'], //标志是否使用SKU信息
-                    'img' => $vo['main_img'], 'price' => $vo['price'], 'ori_price' => $vo['ori_price'], 'name' => $vo['name'], 'sku_id' => '', 'sku_desc' => $tmp_arr[$vo['id']], 'count' => $tmp_count[$vo['id']]//购买商品数量
+                    'img' => $vo['main_img'], 'price' => $vo['price'],'template_id'=>$vo['template_id'], 'ori_price' => $vo['ori_price'], 'name' => $vo['name'], 'sku_id' => '', 'sku_desc' => $tmp_arr[$vo['id']], 'count' => $tmp_count[$vo['id']]//购买商品数量
                 );
+
+
+
 
                 if (intval($vo['has_sku']) == 1) {
                     //有规格的情况下
@@ -341,7 +347,8 @@ class OrdersController extends ShopController {
 
             $list = array('list' => $tmp_store, 'all_price' => $all_price, 'all_express' => $all_express, );
 
-            session("confirm_order_info", $list);
+
+
         }
 
         //获取默认收货地址
@@ -349,7 +356,52 @@ class OrdersController extends ShopController {
         $default_address = $this -> getDefaultAddress();
 //        dump($default_address);
         $this -> assign("default_address", $default_address);
+
+       // dump($list);
+        $citys = apiCall(AddressApi::GET_INFO, array( array('wxuserid' => $this -> userinfo['id'], 'default' => 1)));
+        //获取当前用户ID
+        $cityID = $citys['info']['city'];
+        $freights=0.00;
+        if($list['list'][1]['total_price']<(float)$list['list'][1]['store']['free_shipping']){
+            if($cityID!=null){
+                foreach($list['list'][1]['products'] as $v=>$p){
+                    $t=apiCall(FreightTemplateApi::QUERY_WITH_ADDRESS,array(array('id'=>$p['template_id'])));
+                    //dump($t);
+                    $freight=0.00;
+                    if(count($t[0]['freightAddress'])==1){
+                        $freight=(float)$t[0]['freightAddress'][0]['money']*(float)$p['count'];
+                    }else{
+                        $isExists=false;
+                        foreach($t[0]['freightAddress'] as $f){
+                            $fs=explode(',',$f['addressids']);
+                            if(in_array($cityID,$fs)){
+                                $freight=(float)$f['money']*(float)$p['count'];
+                                $isExists=true;
+                                break;
+                            }
+                        }
+                        if(!$isExists){
+                            $freight=(float)$t[0]['freightAddress'][0]['money']*(float)$p['count'];
+                        }
+                    }
+                    //$list['list'][1]['products'][$v]['company']
+                    $list['list'][1]['products'][$v]['post_price']=$freight;
+                    $freights+=$freight;
+                }
+            }
+        }else{
+            foreach($list['list'][1]['products'] as $v=>$p){
+                $list['list'][1]['products'][$v]['post_price']=0;
+            }
+            $freights=-1;
+        }
+            //$list['list'][1]['products'][$v]['post_price']=0;
+
+
         $this -> assign("list", $list);
+        session("confirm_order_info", $list);
+        //dump($list);
+        $this->assign('freights',$freights);
         $this ->theme($this->themeType)-> display();
 
     }
@@ -548,7 +600,6 @@ class OrdersController extends ShopController {
             LogRecord($result['info'], __FILE__ . __LINE__);
             $this -> error($result['info']);
         }
-
         return $result['info'];
     }
 

@@ -10,7 +10,7 @@ namespace Admin\Controller;
 use Shop\Api\CategoryApi;
 
 class CategoryController extends AdminController{
-	
+
 	public function index(){
 		$parent = I('parent',0);
 		$preparent = I('preparent',-1);
@@ -19,34 +19,34 @@ class CategoryController extends AdminController{
 			'parent'=>$parent
 		);
 		$name = I('name','');
-		$params = array(			
+		$params = array(
 			'parent'=>$parent
 		);
-		
+
 		if(!empty($name)){
 			$map['name'] = array('like',"%$name%");
 			$params['name'] = $name;
 		}
-		
+
 		$result = apiCall(CategoryApi::GET_INFO, array(array('id'=>$parent)));
 		if(!$result['status']){
 			$this->error($result['info']);
 		}
 		$parent_vo = $result['info'];
-		
+
 		$result = apiCall(CategoryApi::GET_INFO, array(array('id'=>$preparent)));
 		$prepreparent = "";
 		if($result['status']){
 			$prepreparent = $result['info']['parent'];
 		}
-		
-		
+
+
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		
+
 		$order = " id asc ";
 		//
 		$result = apiCall(CategoryApi::QUERY,array($map,$page,$order,$params));
-		
+
 		//
 		if($result['status']){
 			$this->assign('level',$level);
@@ -64,7 +64,7 @@ class CategoryController extends AdminController{
 		}
 	}
 
-	
+
 	/**
 	 * 一级类目添加
 	 */
@@ -73,7 +73,7 @@ class CategoryController extends AdminController{
 			$parent = I('parent',0);
 			$preparent = I('preparent',-1);
 			$level = I('level',0);
-			
+
 			$this->assign("parent",$parent);
 			$this->assign("preparent",$preparent);
 			$this->assign("level",$level);
@@ -87,7 +87,7 @@ class CategoryController extends AdminController{
 				'cate_id'=>'custom',
 				'level'=>$level,
 			);
-			
+
 			$result = apiCall(CategoryApi::ADD, array($entity));
 			if($result['status']){
 				$this->success("添加成功！",U('Admin/Category/index'));
@@ -96,16 +96,16 @@ class CategoryController extends AdminController{
 			}
 		}
 	}
-	
+
 	/**
 	 * 编辑
 	 */
 	public function edit(){
 		if(IS_GET){
-			
+
 			$parent = I('parent',-1);
 			$preparent = I('preparent',0);
-			
+
 			$id = I('get.id',0);
 			$map = array('id'=>$id);
 			$result = apiCall(CategoryApi::GET_INFO, array($map));
@@ -117,13 +117,13 @@ class CategoryController extends AdminController{
 			}else{
 				$this->error($result['info']);
 			}
-			
+
 		}else{
 			$id = I('post.id',0);
 			$entity = array(
 				'name'=>I('post.name'),
 			);
-			
+
 			$result = apiCall(CategoryApi::SAVE_BY_ID, array($id,$entity));
 			if($result['status']){
 				$this->success("编辑成功！");
@@ -132,7 +132,7 @@ class CategoryController extends AdminController{
 			}
 		}
 	}
-	
+
 	public function delete(){
 		$id = I('get.id',0);
 		$map = array('parent'=>$id);
@@ -148,12 +148,12 @@ class CategoryController extends AdminController{
 			}else{
 				$this->error($result['info']);
 			}
-			
+
 		}else{
-			
+
 		}
 	}
 
-		
+
 }
 
