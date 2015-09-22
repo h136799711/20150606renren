@@ -1,0 +1,69 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+    <link rel="stylesheet" type="text/css" href="__CSS__/common.css?v=__APP_VERSION__" />
+    <style type="text/css">
+    </style>
+</block>
+
+<block name="area_body">
+
+    <div class="header">
+        <div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:window.history.go(-1)"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;意见反馈</a> <a href="{:U('Shop/Index/index')}"><i class="am-icon-home am-icon-sm am-fr"></i></a></div>
+    </div>
+
+    <div class="center ">
+        <form class="am-form suggestForm">
+            <fieldset>
+                <input type="hidden" name="orderid" value="{$orderid}"/>
+                <div class="am-form-group">
+                    <label >退货原因</label>
+                    <textarea class=""  rows="5" name="yy" id="text" placeholder="亲，请写明退货原因"></textarea>
+                </div>
+                <div class="am-form-group">
+                    <p class="am-text-danger js_error"></p>
+                </div>
+
+                <a target-form="suggestForm" href="__SELF__" id="submit" disabled="disabled" class="ajax-post am-btn am-btn-block am-btn-danger am-disabled">提交</a>
+
+            </fieldset>
+        </form>
+    </div>
+
+
+</block>
+
+<block name="area_footer">
+    <script type="text/javascript">
+
+
+        $("#text").keyup(function(){
+            checkAll();
+        });
+
+        function checkAll(){
+
+            if($("#text").val().length>500){
+                $(".js_error").text("不得超过五百字");
+                disableSubmit();
+                return false;
+            }
+
+            if($("#text").val().length  != 0){
+                enableSubmit();
+            }else{
+                disableSubmit();
+            }
+            return ;
+        }
+
+        function enableSubmit(){
+            $("#submit").removeAttr("disabled").removeClass("am-disabled");
+        }
+        function disableSubmit(){
+            $("#submit").attr("disabled","disabled").addClass("am-disabled");
+        }
+    </script>
+
+</block>
+		

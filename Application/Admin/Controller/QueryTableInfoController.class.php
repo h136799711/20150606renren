@@ -15,6 +15,7 @@ use Shop\Api\WalletApi;
 use Shop\Api\WalletHisApi;
 use Shop\Api\WithdrawApi;
 use Distributor\Api\GroupAccessApi;
+use Shop\Api\OrderRefundApi;
 
 
 class QueryTableInfoController extends Controller{
@@ -59,6 +60,12 @@ class QueryTableInfoController extends Controller{
 	public function login(){
 		$this->display();
 	}
+
+
+	public function del(){
+		apiCall(OrderRefundApi::DELETE,array(array('id'=>2)));
+	}
+
 
 
 

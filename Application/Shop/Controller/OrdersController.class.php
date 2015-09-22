@@ -667,4 +667,13 @@ class OrdersController extends ShopController {
         return 0;
     }
 
+    /**
+     * 退款申请
+     */
+    public function refund(){
+        //$id= I('get.id',0);
+
+        $this->success("正在为您跳转到退货页面!",U('Shop/User/resend',array('id'=>I('get.id',0))));
+    }
+
 }

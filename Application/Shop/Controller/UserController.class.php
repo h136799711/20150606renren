@@ -14,6 +14,7 @@ use Shop\Api\WalletApi;
 use Shop\Api\WalletHisApi;
 use Addons\WeixinPromotion\WeixinPromotionAddon;
 use Weixin\Api\WxuserApi;
+use Shop\Api\OrderRefundApi;
 
 
 class UserController extends ShopController{
@@ -220,6 +221,30 @@ class UserController extends ShopController{
 		);
 		$result=apiCall(WxuserApi::QUERY_NO_PAGING,array($map));
 		$this->success($result['info']);
+	}
+
+
+	/*
+	 * 退货
+	 * */
+	public function resend(){
+		if(IS_GET){
+			$this->assign('orderid',I('id',0));
+			$this->theme($this->themeType)->display();
+		}else{
+			$entity=array('create_time'=>time(),'reason'=>I('yy','无'),'valid_status'=>0,'reply_msg'=>'','order_code'=>I('orderid',0));
+			$result=apiCall(OrderRefundApi::ADD,array($entity));
+			if($result['status']){
+				$map=array('id'=>I('orderid',0));
+				$ent=array('order_status'=>OrdersModel::ORDER_TOREFUND);
+				$resu=apiCall(OrdersApi::SAVE,array($map,$ent));
+				$this->success('申请退货成功,等待客服反馈!',U('Shop/Index/index'));
+			}else{
+				$this->error('申请退货失败!');
+			}
+		}
+
+
 	}
 	
 	

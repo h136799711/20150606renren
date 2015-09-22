@@ -268,9 +268,9 @@
               
               {{#eq order_status 4}}
               <a href="{:U('Shop/Orders/confirmReceive')}?id={{orderid}}" data-tip="确定收到货了?" class="ajax-get confirm a_btn" style="border: 1px solid green;">确认收货</a>
+			  <a href="{:U('Shop/Orders/refund')}?id={{orderid}}" data-tip="确定要退款?" class="ajax-get confirm a_btn" style="border: 1px solid red;">申请退款</a>
               {{/eq}}
-              
-              
+
                
               {{#eqs order_status 5 comment_status 0}}
                

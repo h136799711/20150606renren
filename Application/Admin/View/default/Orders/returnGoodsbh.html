@@ -1,0 +1,58 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/localization/messages_zh.min.js"></script>
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+
+			<form class="form form-horizontal validateForm returnForm">
+				<input type="hidden" value="{$id}" name="id" />
+				<input type="hidden" value="{$thid}" name="thid" />
+				<fieldset>
+					<legend>退货申请退回
+						<div class="form-group">
+							<label class="control-label col-lg-2 col-md-2">&nbsp;</label>
+							<div class="col-lg-10 col-md-10">
+								<a target-form="returnForm" href="{:U('Admin/Orders/returnGoods')}" class="ajax-post btn btn-default btn-sm"><i class="fa fa-save"></i>保存</a>
+								<a href="javascript:history.back(-1);" class="btn btn-default btn-sm"><i class="fa fa-reply"></i>返回</a>
+							</div>
+							<span class="help-block">填写退回原因！</span>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-lg-2 col-md-2">原因：</label>
+							<div class="col-lg-10 col-md-10">
+								<textarea class="form-control required" name="note" rows="3" placeholder="请填写退回申请原因"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-lg-2 col-md-2">&nbsp;</label>
+							<div class="col-lg-10 col-md-10">
+								<a target-form="returnForm" href="{:U('Admin/Orders/returnGoodsbh')}" class="ajax-post btn btn-default btn-sm"><i class="fa fa-save"></i>保存</a>
+								<a href="javascript:history.back(-1);" class="btn btn-default btn-sm"><i class="fa fa-reply"></i>返回</a>
+							</div>
+						</div>
+					</legend>
+				</fieldset>
+			</form>
+			<script type="text/javascript">
+				$(function() {});
+			</script>
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+	<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+</block>

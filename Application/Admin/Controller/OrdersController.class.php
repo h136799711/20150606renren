@@ -18,6 +18,7 @@ use Shop\Api\OrderStatusHistoryApi;
 use Shop\Model\OrdersModel;
 use Weixin\Api\WxaccountApi;
 use Weixin\Api\WxuserApi;
+use Shop\Api\OrderRefundApi;
 
 class OrdersController extends AdminController {
 	/**
@@ -358,7 +359,7 @@ class OrdersController extends AdminController {
 	 */
 	public function returned() {
 //		if (IS_GET) {
-			$orderid = I('orderid', '');
+			/*$orderid = I('orderid', '');
 			$userid = I('uid', 0);
 			$orderStatus = I('orderstatus', OrdersModel::ORDER_RECEIPT_OF_GOODS);
 			$params = array();
@@ -370,7 +371,7 @@ class OrdersController extends AdminController {
 			$map['wxaccountid'] = getWxAccountID();
 			$map['order_status'] = $orderStatus;
 			$map['pay_status'] = OrdersModel::ORDER_PAID;
-			
+
 			$params['order_status'] = $orderStatus;
 			$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 			$order = " createtime desc ";
@@ -392,17 +393,68 @@ class OrdersController extends AdminController {
 			} else {
 				LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
 				$this -> error($result['info']);
-			}
+			}*/
 //		} elseif (IS_POST) {
-//			
+//
 //		}
+
+
+		$orderid = I('orderid', '');
+		$userid = I('uid', 0);
+		$valid_status=I('valid_status',0);
+		if($valid_status==1){
+			$orderStatus = I('orderstatus', OrdersModel::ORDER_RETURNED);
+		}else if($valid_status==0){
+			$orderStatus = I('orderstatus', OrdersModel::ORDER_TOREFUND);
+		}else if($valid_status==2){
+			$orderStatus = I('orderstatus', OrdersModel::ORDER_SHIPPED);
+		}
+		$params = array();
+		$map = array();
+		if (!empty($orderid)) {
+			$map['orderid'] = array('like', $orderid . '%');
+			$params['orderid'] = $orderid;
+		}
+		//$map['wxaccountid'] = getWxAccountID();
+		$map['order_status'] = $orderStatus;
+		$map['pay_status'] = OrdersModel::ORDER_PAID;
+
+		$params['order_status'] = $orderStatus;
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+		$order = " createtime desc ";
+
+		if ($userid > 0) {
+			$map['uid'] = $userid;
+		}
+
+		//
+		$result = apiCall(OrdersInfoViewApi::QUERY, array($map, $page, $order, $params));
+
+		$map=array(
+			'valid_status'=>$valid_status
+		);
+
+		$tui=apiCall(OrderRefundApi::QUERY,array($map));
+		$this->assign('ths',$tui['info']['list']);
+		//
+		if ($result['status']) {
+			$this -> assign('orderid', $orderid);
+			$this -> assign('orderStatus', $orderStatus);
+			$this -> assign('valid_status', $valid_status);
+			$this -> assign('show', $tui['info']['show']);
+			$this -> assign('list', $result['info']['list']);
+			$this -> display();
+		} else {
+			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
+			$this -> error($result['info']);
+		}
 	}
 	
 	/**
 	 * 单个退货操作
 	 */
 	public function returnGoods(){
-		if(IS_GET){
+		/*if(IS_GET){
 			$id = I('get.id',0);
 			$this->assign("id",$id);
 			$this->display();
@@ -411,6 +463,62 @@ class OrdersController extends AdminController {
 
 			$result = apiCall(OrderStatusApi::RETURNED,array($id,false,UID));
 			if($result['status']){
+				$this->success("操作成功！",U('Admin/Orders/returned'));
+			}else{
+				$this->error($result['info']);
+			}
+		}*/
+
+
+
+		if(IS_GET){
+			$id = I('get.id',0);
+			$thid = I('get.thid',0);
+			$this->assign("thid",$thid);
+			$this->assign("id",$id);
+			$this->display();
+		}else{
+			$id = I('id',0);
+			$thid=I('thid',0);
+			$entity=array('valid_status'=>1,'reply_msg'=>I('note','无'));
+
+			/**
+			 * TODO:退款代码
+			 */
+			$map=array('order_status'=>OrdersModel::ORDER_RETURNED,'pay_status'=>OrdersModel::ORDER_REFUND);
+			$result = apiCall(OrdersApi::SAVE_BY_ID,array($id,$map));
+			if($result['status']){
+				$resu=apiCall(OrderRefundApi::SAVE_BY_ID,array($thid,$entity));
+				$this->success("操作成功！",U('Admin/Orders/returned'));
+			}else{
+				$this->error($result['info']);
+			}
+		}
+	}
+
+
+
+	/**
+	 * 驳回退货申请
+	 */
+	public function returnGoodsbh(){
+		if(IS_GET){
+			$id = I('get.id',0);
+			$thid = I('get.thid',0);
+			$this->assign("thid",$thid);
+			$this->assign("id",$id);
+			$this->display();
+		}else{
+			$id = I('id',0);
+			$thid=I('thid',0);
+			$entity=array('valid_status'=>2,'reply_msg'=>I('note','无'));
+			$resu=apiCall(OrderRefundApi::SAVE_BY_ID,array($thid,$entity));
+
+
+			$map=array('id'=>$id);
+			$ent=array('order_status'=>OrdersModel::ORDER_SHIPPED);
+			$result=apiCall(OrdersApi::SAVE,array($map,$ent));
+			if($resu['status']){
 				$this->success("操作成功！",U('Admin/Orders/returned'));
 			}else{
 				$this->error($result['info']);

@@ -666,6 +666,14 @@ function time_format($time = NULL,$format='Y-m-d H:i'){
     return date($format, $time);
 }
 
+function subtext($text, $length)
+{
+	if(mb_strlen($text, 'utf8') > $length)
+		return mb_substr($text, 0, $length, 'utf8').'...';
+	return $text;
+}
+
+
 /**
  * 根据用户ID获取用户昵称
  * @param  integer $uid 用户ID

@@ -45,6 +45,8 @@ class OrdersModel extends Model{
 	 * 取消或交易关闭
 	 */
 	const ORDER_CANCEL = 8;
+
+	const ORDER_TOREFUND=9;
 	
 	
 	//订单支付状态
