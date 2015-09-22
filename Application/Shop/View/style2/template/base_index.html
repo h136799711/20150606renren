@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <title>{$meta_title|default='杭州博也网络科技'}</title>
+     <script type="text/javascript" src="__CDN__/jquery_validation/1.13.1/localization/jquery.validate.js">  </script>
+    <meta name="keywords" content="{$seo.keywords|default="
+    "}" />
+    <meta name="description" content="{$seo.description|default="
+    "}" />
+    <meta name="author" content="{$cfg.owner|default=" ITBOYE
+    "}" />
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script type="text/javascript">
+        new function (){
+            var _self = this;
+            _self.width = 640;//设置默认最大宽度
+            _self.fontSize = 100;//默认字体大小
+            _self.widthProportion = function(){
+                var p = (document.body&&document.body.clientWidth||document.getElementsByTagName("html")[0].offsetWidth)/_self.width;
+                return p > 1 ? 1 : p < 0.5 ? 0.5: p;
+            };
+            _self.changePage = function(){
+                document.getElementsByTagName("html")[0].setAttribute("style","font-size:"+_self.widthProportion()*_self.fontSize+"px !important");
+            }
+            _self.changePage();
+            window.addEventListener('resize',function(){_self.changePage();},false);
+
+        };
+    </script>
+
+    <!-- 系统基本样式 -->
+
+    <link rel="stylesheet" type="text/css" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css"/>
+    <link type="text/css" rel="stylesheet" href="__CSS__/layout.css?v=__APP_VERSION__"/>
+
+    <!-- 脚本 -->
+    <script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+
+    <block name="area_header">
+        <!--顶部区域 -->
+    </block>
+
+</head>
+
+<body class="theme-default theme-cafe app">
+
+<block name="area_body">
+    <!--内容区域 -->
+</block>
+<block name="area_footer">
+    <!--底部区域 -->
+</block>
+
+
+{:tag('pageFooter')}
+
+</body>
+
+</html>

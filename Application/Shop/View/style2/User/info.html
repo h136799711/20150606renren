@@ -1,0 +1,278 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<style type="text/css">
+		.header{
+			background: #FFFFFF;
+			margin-bottom: 15px;
+		}
+		.am-with-topbar-fixed-top {
+			padding-top: 39px;
+		}
+		.logo-wrp{
+			position: relative;
+			height: 120px;
+			padding: 10px 16px;
+			font-size: 14px;
+			text-shadow: 1px 1px 4px rgba(0,0,0,.6);
+			color: #fff;
+			padding-top: 16px;
+			margin-top: -55px;			
+		}
+		.logo-wrp .user-logo{
+			padding: 10px 11px 0;
+		  	float: left;
+		}
+		.user-logo img{
+			height: 56px;
+		  	width: 56px;
+		  	border-radius: 50%;
+  			-webkit-border-radius: 50%;
+		  	border: 1px solid #EFDAE5;
+		}	
+		.logo-wrp .logo-circle{			
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAAC0CAMAAAB43JS2AAAAA3NCSVQICAjb4U/gAAABqlBMVEX///8AAAAAAABaWlpYWFhWVlZVVVUAAACjo6OhoaGIiIiDg4MxEw0tEQwrEQwsEQy3t7e1tbWenp5KHhRJHRTGxsbCwsJyLiByLh9yLSBxLB9gJhrR0dHPz8/MzMyTOSd/MyTZ2dmLOCiHNyeJNiaJNSXl5eXh4eHf39/Z2dmcQCybPyyhPiuZPCrr6+vp6enw8PCoRC+oRDCnQi6mQi3z8/OySDKxRjGwRTCwRjD6+vr29va5SDH6+vq7TDa6SjO7STK5SDG3SDK3RzH////69PP16efv3trr087myMLhvbfhvLXcsqnYp53UnZHQk4bOkYTKh3nFfG3Eemu/cF++aFa7ZVLMW0PLWkLKWUHHWkLJWkLJWEC4XEi6XErJV0DHV0DFWELHWEDFWEDIVj7HVj7EV0DFVkC3WkjHVT7DVj/BVkDBVj/CVj7GVDzBVT7DVT+/VkC/Vj+/VD2+VUC7VUC/VT7FUjvEUjq7VD69VD29VD7EUTq3VD7DUDm7Ujy5UjzDTji3Uj23UTu3UTy3UjzBTja1UTzATDW1UDuzUDu/TDSzTzq+SjMPKiEHAAAAjnRSTlMAESIzMzMzM0REREREREREVVVVVVVmZmZmZmZmd3d3d3eIiIiIiJmZmZmZmZmZqqq7u7u7u8zMzMzM3d3d7u7u7u7u7v//////////////////////////////////////////////////////////////////////////////////////////////////O3FNUAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwMy8xMS8xMyr709MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAKcElEQVR4nN2ci39btRXHr5Q2buKy2WHpNhaXeWN2gOF6Yx6bPW9jNAmPBkJ55EEKeWwJc8KytmmZw9IGNzRNaf/n6XElHd23ZclhnNB+GtuSvv7pnKN7r47wvO+PIfbfGQ7PflDwH2fAQAZH/C9h3jBpFEOsDYElyIC1n2HBaBRk4CiDOI5IWGwoCISLpXK90bwqrdmoV0tFSOM5gKEYiiJf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) no-repeat;
+			background-size: contain;
+			width: 78px;
+			height: 36px;
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			padding-top: 90px;
+			font-size: 16px;
+			color: #fff;
+		}
+		.logo-wrp .username{
+			padding-top: 15px;
+		}
+		.logo-wrp .logo-rank{
+			position: absolute;
+			text-align: center;
+			font-size: 10px;
+			margin-left: 7px;
+		}
+		.quick-menu{
+			height: 100%;
+			font-size: 12px;
+		}
+		.quick-menu .am-list{
+			margin-bottom: 12px;
+		}
+		.quick-menu .am-list>li>a{
+			padding: 5px 10px;
+  			-webkit-tap-highlight-color: rgba(240,240,240,0.7);
+  			color:#666;
+  			height: 40px;
+ 			line-height: 30px;
+  			font-size: 14px;
+			
+		}
+
+
+		.quick-menu .am-list>li>a:visited{
+			color:#666;
+		}
+		
+		.quick-menu .am-list>li>a>i.icon{
+			margin-right: 8px;
+		}
+		
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		.user-banner{
+			background-size: contain;
+			text-align: right;
+			background:url(__IMG__/user-banner/bg.jpg?v=1.0) repeat;
+			height: 90px;
+		}
+		.user-banner img{
+			height: 90px;
+		}
+		.rank{
+			width: 100%;
+		    vertical-align: middle;
+		    margin-left: 5px;
+		}
+		.rank i{
+			width:16px ;
+			height: 16px;
+		    display: inline-block;
+		 }
+		.rank-1{
+			background: url(__IMG__/rank/1.gif) no-repeat;
+		}
+		.rank-2{
+			background: url(__IMG__/rank/2.gif) no-repeat;
+		}
+		.rank-3{
+			background: url(__IMG__/rank/3.gif) no-repeat;
+		}
+		.rank-100{
+			background: url(__IMG__/rank/100.gif) no-repeat;
+		}
+		.mb-os{
+			
+		  height: 90px;
+		  width: 100%;
+		  color: #333333;
+		  padding-left: 70px;
+		}
+		.mb-os ul{
+			list-style-type: none;
+			width:100%;
+			margin-top: 10px;
+		}
+		.mb-os ul li{
+			float:left;		
+  			text-align: center;
+  			position: relative;
+  			font-size: 10px;
+  			margin:0px 3px;
+  			width: 20%;
+  			height: 100%;
+  			line-height: 1.6;
+		}
+		.mb-os ul li a{
+			padding-top: 14px;
+			height: 46px;
+			color: #666;
+			text-shadow: none;
+		}
+		.mb-os ul li:after{
+			content: ' ';
+			position: absolute;
+			top: 22px;
+			right: -1px;
+			height: 14px;
+			border-right: 1px #ddd solid;
+		}
+		
+		.theme-shop .am-gotop-fixed {
+			  bottom: 3rem;
+			  left: 0.2rem;
+			  width: 1.5rem;
+		}
+		.theme-shop .am-gotop-fixed .am-gotop-icon {
+			  width: 100%;
+			  height: 1.5rem;
+			  line-height: 1.3rem;
+			  background-color: #FF4400;
+			  vertical-align: middle;
+			  color: #FAFAFA;
+			  border-radius: 50%;
+		}
+		body {
+			  position: relative;
+			  background: #fff;
+			  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;
+			  font-weight: 400;
+			  line-height: 1.6;
+			  color: #333;
+			  font-size: 0.6rem;
+		}
+
+
+		.quick-menu .am-list>li{margin-top:0.2rem }
+
+		.childList{margin: 0;list-style: none;background:#FAF2F2; }
+		.childList li{list-style: none;margin: 0; }
+	</style>
+	<script type="text/javascript">
+		var i=0;
+		function toWatchChild(){
+			if(i==0){
+				$('.childList').empty();
+				var k=true;
+				$.ajax({
+					type:"get",
+					url:"{:U('Shop/User/myChild')}",
+					success:function(data){
+						if(data.info!=null){
+							for(var k=0;k<data.info.length;k++){
+							$('.childList').append(
+							"<li class='am-cf' style='width: 100%;margin-top:2px;'>"+
+							"<img  src='"+
+							data.info[k]['avatar']+"' style='width:2rem;height:2rem;border-radius:50%'/>"
+							+"<span style='margin-left: 5rem;'>"+data.info[k]['nickname']+"</span>"+"</li>");
+							}
+						}else{
+							alertMsg('您还没有推荐任何人<br />快去推荐啦！♪(^∇^*)');
+							k=false;
+						}
+					}
+				});
+				if(!k){
+					//$('#i_myChild').removeClass('am-icon-chevron-down').addClass('am-icon-chevron-right');
+					//i=0;
+				}else{
+					$('#i_myChild').removeClass('am-icon-chevron-right').addClass('am-icon-chevron-down');
+					i=1;
+				}
+				
+			}else{
+				$('#i_myChild').removeClass('am-icon-chevron-down').addClass('am-icon-chevron-right');
+				$('.childList').empty();
+				i=0;
+			
+			}
+		}
+	</script>
+</block>
+
+<block name="area_body">
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top">我的资料</div>
+        <div class="user-banner">
+            <img class="am-responsive-width" src="__IMG__/user-banner/banner.jpg" alt="banner" />
+        </div>
+        <div class="logo-wrp" >
+            <div class="user-logo am-inline-block">
+                <img class="" src="{$userinfo.avatar}" alt="logo" />
+                <span class="logo-circle"></span>
+                <!--<span class="logo-rank">V{$rank['loop']}会员</span>-->
+            </div>
+            <div class="username">
+                <span >{$userinfo.nickname}</span>
+			<span class="rank">
+				<for start="0" end="$rank['loop']">
+                    <i class="rank rank-{$rank['type']}"></i>
+                </for>
+			</span>
+            </div>
+            <div class="mb-os">
+                <ul class="am-cf">
+                    <li><a href="{:U('Shop/User/order',array('datatype'=>1))}">{$tobepaid}<br/>待付款</a></li>
+                    <li><a href="{:U('Shop/User/order',array('datatype'=>2))}">{$tobeshipped}<br/>待发货</a></li>
+                    <li><a href="{:U('Shop/User/order',array('datatype'=>3))}">{$tobereceipt}<br/>待收货</a></li>
+                    <li><a href="{:U('Shop/User/order',array('datatype'=>4))}">{$tobeeval}<br/>待评价</a></li>
+                </ul>
+            </div>
+        </div>
+	</div>
+	
+	<div class="quick-menu">
+		<ul class="am-list goto-order">
+		  <li class="am-cf"><a href="{:U('Shop/User/order')}"><i class="icon am-icon-reorder" style="color: palevioletred;width:0.6rem"></i>我的订单<i class="am-fr am-icon-chevron-right"></i></a> </li>
+			<li class="am-cf"><a href="javascript:void(0)" onclick="toWatchChild()"><i class="icon am-icon-group" style="color:lightblue;width:0.6rem"></i>我推荐的人<i id="i_myChild" class="am-fr am-icon-chevron-right"></i></a> </li>
+			<li style="border: none"><ul class="childList" style="">
+			</ul></li>
+			<li class="am-cf"><a href="{:U('Shop/User/withdraw')}"><i class="icon am-icon-cny" style="color:#F89A1D;width:0.6rem"></i>提现<i class="am-fr am-icon-chevron-right"></i></a> </li>
+			<li class="am-cf"><a href="{:U('Shop/Suggest/add')}"><i class="icon am-icon-question-circle" style="color:green;width:0.6rem"></i>帮助与反馈<i class="am-fr am-icon-chevron-right"></i></a> </li>
+		</ul>
+
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	<include file="style1/partial/footermenu" />
+</block>
+

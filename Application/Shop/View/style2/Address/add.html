@@ -1,0 +1,241 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/localization/messages_zh.min.js"></script>
+
+	<style type="text/css">
+		html{
+			font-size: 10px;
+		}
+		.header{
+			background: #FFFFFF;
+			margin-bottom: 15px;
+		}
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+  		
+	</style>
+</block>
+
+<block name="area_body">
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="{:U('Shop/Orders/confirm',array('fromsession'=>1))}"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;收货地址管理</a></div>
+	</div>
+	
+	<div class="order-confirm">
+		<form class="js_address_form am-form am-padding-left-sm am-padding-right-sm validate-form" method="post" action="{:U('Shop/Address/add')}">
+			<input type="hidden" name="id" value="{$address.id}" />
+			<div class="am-form-group-sm">
+				<div class="am-form-label">所在地区</div>
+				<div class="">
+					
+					<select id="province" class="am-form-control required  am-margin-top-sm" name="province">
+							<option value="">请选择省份</option>
+						<volist name="provinces" id="vo">
+							<option value="{$vo.provinceid}" <eq name="address['province']" value="$vo['provinceid']">selected="selected"</eq> >{$vo.province}</option>
+						</volist>
+					</select>
+					<select id="city" class="am-form-control required  am-margin-top-sm" name="city">
+							<empty name="city">
+							<option value="">请先选择省份</option>
+							<else/>
+								<volist name="city" id="vo">
+									<option value="{$vo.cityid}" <eq name="address.city" value="$vo['cityid']" >selected="selected"</eq> >{$vo.city}</option>
+								</volist>								
+							</empty>
+							 
+					</select>
+					<select id="area" class="am-form-control  am-margin-top-sm <empty name="address.area">am-hide</empty>" name="area">
+							<empty name="area">
+								<option value="">请先选择城市</option>
+							<else/>
+								<volist name="area" id="vo">
+									<option value="{$vo.areaid}" <eq name="address.area" value="$vo['areaid']" >selected="selected"</eq> >{$vo.area}</option>
+								</volist>								
+							</empty>
+					</select><label></label>
+				</div>
+			</div>
+			<div class="am-form-group-sm">
+				<div class="am-form-label">详细地址</div>
+				<div class="">
+					<textarea name="detail" class="required" placeholder="详细地址">{$address['detailinfo']}</textarea><label></label>
+				</div>
+			</div>
+			<div class="am-form-group-sm">
+				<div class="am-form-label">收货人姓名</div>
+				<div class="">
+					<input type="text" name="name" class="required am-form-control" value="{$address['contactname']}"  /><label></label>
+				</div>
+			</div>
+			
+			<div class="am-form-group-sm">
+				<div class="am-form-label">手机号码</div>
+				<div class="">
+					<input type="tel" name="mobile" class="required am-form-control"  value="{$address['mobile']}" />
+					<label></label>
+				</div>
+			</div>
+			
+			<div class="am-form-group-sm">
+				<div class="am-form-label">邮编</div>
+				<div class="">
+					<input type="hidden" name="fromsession" value="1" />
+					<input type="tel" name="postcode" class="required am-form-control postcode" value="{$address['zip_code']}"  />
+					<label></label>
+				</div>
+			</div>
+			
+			
+			<div class="am-form-group-sm am-margin-top-sm">
+				<a href="{:U('Shop/Address/add',array('id'=>$address['id']))}" target-form="js_address_form" class=" ajax-post am-btn am-btn-sm am-btn-block am-btn-danger"><i class="am-icon-save"></i>保存</a>
+			</div>
+		</form>
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	<script>
+		function appendToCity(data){
+				var city = $("#city");
+				city.empty().append("<option value=''>请先选择省份</option>")
+				for(var i in data){
+					var ele = $("<option></option>");
+					ele.text(data[i].city).attr("value",data[i].cityid).appendTo(city);
+				}
+		}
+		function appendToArea(data){
+//					$("#area").removeClass("txt-gray");
+					var area = $("#area");
+					area.empty();
+					if(!data){
+						area.addClass("am-hide");
+						return ;
+					}
+					if(data.length > 0){
+						area.removeClass("am-hide");
+					}else{
+						area.addClass("am-hide");
+					}
+					for(var i=0;i<data.length;i++){
+						var ele = $("<option></option>");
+						ele.text(data[i].area).attr("value",data[i].areaid).appendTo(area);
+					}
+		}
+		$(function(){
+			$("#province").change(function(){
+				var provinceID = $("#province").val();
+				console.log(provinceID);
+				if(provinceID){
+					var ele = loadingMsg("请求中...");
+					$.post("{:U('Tool/City/getCitys')}",{provinceid:provinceID}).always(function(){
+							ele.modal("close");
+					}).done(function(data){
+						console.log(data);
+						if(data.status){
+							appendToCity(data.info);
+						}else{
+							
+						}
+					});
+				}
+			});
+			$("#city").change(function(){
+//					$("#city").removeClass("txt-gray");
+					var cityID = $("#city").val();
+//					console.log(cityID);
+					if(cityID){
+//						$(".postcode").val(cityID);
+						var ele = loadingMsg("请求中...");
+						$.post("{:U('Tool/City/getArea')}",{cityid:cityID}).always(function(){
+							ele.modal("close");
+						}).done(function(data){
+//							console.log(data);
+							if(data.status){
+								appendToArea(data.info);					
+							}else{
+								
+							}
+							
+						});
+					}
+			});
+			$("#area").change(function(){
+					var areaID = $("#city").val();
+//					$(".postcode").val(areaID);
+			});
+		})
+		
+	</script>
+	
+	
+<script>
+$(function() {
+			// 联系电话(手机/电话皆可)验证     
+			$.validator.addMethod("isPhone", function(value, element) {
+				var length = value.length;
+				var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+				var tel = /^\d{3,4}-?\d{7,9}$/;
+				return this.optional(element) || (tel.test(value) || mobile.test(value));
+			}, "请正确填写您的联系电话");
+			
+			$(".js_address_form").validate({
+				errorPlacement: function(error, element) {
+					element.parent().addClass("am-form-error");
+					$(".am-form-success", element.parent()).remove();
+					error.appendTo(element.parent());
+				},
+				success: function(label) {
+					label.parent().removeClass("am-form-error").addClass("am-form-success");
+					label.removeClass("am-form-error").text("");
+				},
+				rules: {
+					name: {
+						required: true,
+					},
+					mobile: {
+						required: true,
+						isPhone: true,
+					},
+					postcode:{
+						required: true,
+					}
+				},
+				messages: {
+					name: {
+						required: "请输入真实姓名",
+					},
+					mobile: {
+						required: "请输入手机号码",
+					},
+					postcode: {
+						required: "请输入邮编",
+					},
+				}
+			}); //end validate
+		}); //end ready
+	</script>
+</block>
+

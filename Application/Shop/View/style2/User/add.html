@@ -1,0 +1,113 @@
+<extend name="template/base_index" />
+<block name="area_header">
+	 <base href="{:C('SITE_URL')}/" />
+
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="__CSS__/user_add.css?v=__APP_VERSION__"/>
+	<style type="text/css">
+		.header .am-topbar{
+			font-size: 0.4rem;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+	</style>
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/jquery.validate.min.js"> </script> 
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/localization/messages_zh.js"></script>
+	<script type="text/javascript">
+		function toURL(url){
+			window.location.href=url;	
+		}
+		
+		function changeAccountType(type){
+			if(type.value==28||type.value==29){
+				$("input[name='bankBranch']").hide();
+			}else{
+				$("input[name='bankBranch']").show();
+			}
+		}
+		
+		
+		$(function(){
+           $(".validate-form").validate({
+                rules:{
+                    accountName:{
+                        required:true
+                    },
+                    accountType:{
+                        min:1
+                    },
+                    cashAccount:{
+                        required:true
+                       
+                    },
+                    cashAccounts:{
+                       equalTo:"#cashAccount"
+                    },
+                    money:{
+                       required:true,
+                       number:true
+                    }  
+                },
+               	messages:{
+                    accountName:{
+                        required:"收款人必填"
+                    },
+                    accountType:{
+                        min:"请选择提现方式"
+                    },
+                    cashAccount:{
+                        required: "账号卡号不能为空",
+                        //rangelength: $.format("密码最小长度:{0}, 最大长度:{1}。")
+                    },
+                    cashAccounts:{
+                    	//required: "账号卡号不能为空",
+                        equalTo:"两次输入不一致"
+                    },
+                    money:{
+                    	 required:"请输入金额",
+                    	 number:"只能输入数字"
+                    }
+                }
+                          
+            });    
+    
+        });
+        </script>
+	</script>
+</block>
+<block name="area_body">
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;返回</a></div>
+	</div>
+	
+	
+	<div class="div_main">
+		
+		
+		<form class="validate-form"  >
+			<ul>
+			<li class="li_info"><input type="text" name="accountName" class=" am-radius am-text-xs" style="width:100%;border: 1px solid #ccc;" placeholder="请输入收款人" /></li>
+			<li class="li_info">
+				    <select name="accountType"   onchange="changeAccountType(this)">
+				      <option value="0">选择提现方式</option>
+				      <volist name="accountType" id="at">
+						<option value="{$at.id}">{$at.name}</option>
+					</volist>
+				    </select>
+			</li>
+			<!--选择提现方式-->
+			<li class="li_info"><input type="text" name="bankBranch" class="am-form-field am-radius  am-text-xs" style="" placeholder="开户银行支行名称" /></li>
+			<li class="li_info"><input type="text" id="cashAccount" name="cashAccount"  class="am-form-field am-radius  am-text-xs" style="" placeholder="账号/卡号" /></li>
+			<li class="li_info"><input type="text"  name="cashAccounts"  class="am-form-field am-radius am-text-xs" style="" placeholder="确认账号/卡号" /></li>
+			<li class="li_info"><input type="text"  name="money"  class="am-form-field am-radius am-text-xs" style="" placeholder="提取金额" /></li>
+			<li class="li_info"><button type="button" url="{:U('Shop/User/add')}" target-form="validate-form" class="ajax-post am-btn am-btn-success am-btn-block" style="">提取</button></li>
+			</ul>
+		 </form>
+	</div>
+	
+</block>		
+
+<block name="area_footer">
+
+</html>

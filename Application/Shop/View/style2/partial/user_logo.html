@@ -1,0 +1,53 @@
+<style type="text/css">
+	.user-banner{height: 3rem}
+	.user-banner img{width: 100%;height: 100%}
+	.logo-wrp{height: 3rem}
+	.user_logo_ul{float: left;width: 80%}
+	.user_logo_ul li{float:left;padding-top:0.1rem;text-align: center;width: 33%}
+	a.a_top:link {color:#121212;font-size: 0.3rem;}		/* 未访问的链接 */
+	a.a_top:visited {color:#121212;font-size: 0.3rem;}	/* 已访问的链接 */
+	a.a_top:hover {color:#121212;font-size: 0.3rem;}	/* 鼠标移动到链接上 */
+	a.a_top:active {color:#121212;font-size: 0.3rem;}
+
+
+</style>
+<div class="user-banner">
+    <img src="__IMG__/user-banner/banner.jpg" alt="banner" />
+</div>
+<div class="logo-wrp" >
+    <div class="user-logo am-inline-block">
+        <img class="" src="{$userinfo.avatar}" alt="logo" />
+        <span class="logo-circle"></span>
+    </div>
+    <div class="username" style="height:1.2rem">
+        <span >{$userinfo.nickname}的店铺</span>
+			<span class="rank">
+				<for start="0" end="$rank['loop']">
+                    <i class="rank rank-{$rank['type']}"></i>
+                </for>
+			</span>
+    </div>
+
+    
+   
+   <ul class="user_logo_ul">
+   		<a class="a_top" href="{:U('Shop/Product/search')}">
+   			<li><div style="font-size: 0.6rem">{$count}</div>
+   				<div style="margin-top: -0.2rem;color: #999;text-shadow:none">全部商品</div>
+   			</li>
+   		</a>
+   		<!---->
+   		<a class="a_top" href="javascript:alertMsg('该功能尚未开放')">
+   			<li>
+   				<div class="am-icon-star" style="font-size: 0.6rem"></div>
+				<div style="margin-top: -0.2rem;color: #999;text-shadow:none">收藏本店</div>
+   			</li>
+   		</a>
+   		<a class="a_top" href="{:U('Shop/User/getQrcode')}">
+   			<li>
+   			<div class="am-icon-barcode" style="font-size: 0.6rem"></div>
+				<div style="margin-top: -0.2rem;color: #999;text-shadow:none">二维码</div>
+   			</li>
+   		</a>
+   </ul>
+</div>

@@ -1,0 +1,214 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<style type="text/css">
+		html{
+			font-size: 10px;
+		}
+		.header{
+			background: #FFFFFF;
+			margin-bottom: 15px;
+		}
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+  		.order-confirm{
+  			font-size: 1.2rem;
+  		}
+  		.order-confirm .shop-wrp .shop{
+  			background: #fff;
+  			padding: 10px 16px;
+  		}
+  		
+  		.order-confirm .product-list {
+  			background: #fff;
+  			margin-bottom: 20px;
+  		}
+  		
+  		.order-confirm .product-list .product-item .item-desc{
+  			padding-left: 60px;
+  			border-bottom: 1px solid #ECDEDE;
+  		}
+  		
+  		.order-confirm .product-list .product-item .item-desc>div{
+  			width:100%;
+  		}
+  			
+  		.order-confirm .product-list .order-notes textarea{
+  		 	margin: auto;
+  			border: 1px solid #E4CFCF;
+  			width: 100%;
+  		}
+  		.order-confirm .footer-menu{
+  			border-top: 1px solid #D7B2B2;
+  			position: fixed;
+  			bottom: 50px;
+  			background: #FFFFFF;
+  			width: 100%;
+  			height: 48px;
+  			line-height: 48px;
+  			padding: 0px 16px;
+  		}
+  		.order-confirm .address {
+  			background: #fff;
+  			margin-bottom: 20px;
+  			line-height: 120%;
+
+  		}
+  		
+  		.order-confirm .receiver-info{
+  			width:230px;
+  		}
+  		footer.am-footer{
+  			padding-bottom: 60px;
+  		}
+  		
+	</style>
+</block>
+
+<block name="area_body">
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;订单确认</a></div>
+	</div>
+	
+	<div class="order-confirm">
+		
+		<form class="js_order_form" method="post" action="{:U('Shop/Orders/save')}">
+			<input type="hidden" name="address_id" id="address_id" value="{$default_address['id']}" />
+			<input type="hidden" name="province_name" value="{$default_address['province_name']}" />
+			<input type="hidden" name="city_name" value="{$default_address['city_name']}" />
+			<input type="hidden" name="area_name"  value="{$default_address['area_name']}" />
+			<!--
+            	作者：hebiduhebi@126.com
+            	时间：2015-04-27
+            	描述：收货地址
+            -->
+            <div class="address am-padding-sm am-cf">
+            		<empty name="default_address">
+            			<a href="{:U('Shop/Address/add')}" class="am-text-danger am-text-lg" ><i class="am-icon-map-marker"></i>请先选择收货地址<i class="am-icon-chevron-right am-fr"></i></a>
+            		<else/>
+            			<a href="{:U('Shop/Address/add')}">
+	            		<i class="am-icon-map-marker am-icon-lg am-text-primary am-fl"></i>
+	            		
+            			<div class="receiver-info am-fl am-text-sm">收货人：{$default_address['contactname']}   {$default_address['mobile']} <br/><span class="am-text-xs">收货地址：{$default_address['province_name']}{$default_address['city_name']}{$default_address['area_name']}{$default_address['detailinfo']}</span></div>
+	            		<!--<i class="am-icon-chevron-right am-icon-lg am-text-primary am-fr"></i>-->
+	            		</a>
+            		</empty>
+            		
+            </div>
+            
+            <!--
+            	作者：hebiduhebi@126.com
+            	时间：2015-04-27
+            	描述：按店铺分商品
+            -->
+            <div class="shop-wrp">
+           	 	<volist name="list['list']" id="vo">
+            		<div class="shop">
+            			<img src="{$vo['store']['logo']}" style="width: 3rem;height: 3rem;" />&nbsp;&nbsp;{$vo['store']['name']} 
+            		</div>
+            		<div class="product-list">
+            			<volist name="vo['products']" id="item">
+            				
+            				<div class="product-item  am-padding-sm am-cf">
+            					<div class="am-fl item-img">
+								<img src="{$item.img}" class="am-fl" style="width: 4rem;height: 4rem;" />     
+							</div>
+							<div class="item-desc am-cf am-padding-bottom-xs">
+									<div class="am-text-truncate am-fl item-name">{$item.name}
+									</div>
+									<div class="am-text-truncate am-fl am-link-muted am-text-left">{$item['sku_desc']['sku_desc']}
+									</div>
+								<div class="am-fl"><span class="am-fl am-text-danger ">¥<span class="js_item_total_price">{:($item['price']*$item['count']/100.0)}</span></span><span class="am-fr js_item_cnt">x{$item.count}</span><br />运费<span style="color:green">￥{$item['post_price']}</span></div>
+							</div>
+            				</div>
+            				
+            			</volist>
+	            		<!--
+	                    	作者：hebiduhebi@126.com
+	                    	时间：2015-04-27
+	                    	描述：TODO: 配送方式选择
+	                    -->
+	            		<div class="express am-cf  am-padding-sm">
+						<div class="am-fl">配送方式</div>
+						<!--<div class="am-link-muted am-fr">快递<eq name="vo.post_price" value="0">免邮<else/>{:number_format($vo['post_price'],1)} 元</eq> </div>-->
+						<div class="am-link-muted am-fr">
+							<eq name="freights" value="-1">免运费
+
+							<else/>
+								总运费<eq name="freights" value="0"><else/><b style="color: red">{:number_format($freights,1)}</b>元</eq>
+
+							</eq>
+
+						</div>
+					</div>
+					
+	            		<!--
+	                    	作者：hebiduhebi@126.com
+	                    	时间：2015-04-27
+	                    	描述：订单备注
+	                   -->
+					<div class="order-notes  am-padding-sm">
+						<textarea name="notes[]" rows="2" placeholder="给卖家留言"></textarea>
+					</div>
+					
+					<div class="order-info am-link-muted am-text-right  am-padding-sm">
+						<!--{:count($vo['products'])}-->
+						共<span class="am-text-secondary">{$item.count}</span>件商品 合计: <span class="am-text-secondary js_item">{:number_format($vo['total_price'],2)}</span>
+					</div>
+            		</div>
+				</volist>
+            </div>
+            
+            
+			<div>
+				
+			</div>
+
+		</form>
+		
+		
+		<div class="footer-menu am-text-right  am-padding-sm">合计<span class="am-text-danger">¥<span class="js_total_price " >{:number_format($list['all_price']+$list['all_express'],2)}元&nbsp;<if condition="$list['all_express'] gt 0">含运费：{:number_format($list['all_express'],2)}元</if></span></span>
+			<a href="{:U('Shop/Orders/save')}" onclick="return check();" target-form="js_order_form" class="ajax-post am-btn am-btn-sm am-btn-danger">确认</a>
+		</div>
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	<include file="style1/partial/footermenu" />
+	<script>
+	//变更商品数目，选择商品时 计算商品总价
+	
+	function check(){
+		var $address_id = $("#address_id").val();
+		if(!$address_id || $address_id.length == 0){
+			alertMsg("请先选择收货地址!");
+			return false;
+		}
+		return true;
+	}
+	$(function(){
+	})
+		
+	</script>
+</block>
+

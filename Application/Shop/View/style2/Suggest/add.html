@@ -1,0 +1,103 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css?v=__APP_VERSION__" />
+		<style type="text/css">
+		</style>
+</block>
+		
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="{:U('Shop/User/info')}"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;意见反馈</a> <a href="{:U('Shop/Index/index')}"><i class="am-icon-home am-icon-sm am-fr"></i></a></div>
+	</div>
+	
+	<div class="center ">
+		<form class="am-form suggestForm">
+		  <fieldset>
+		    <div class="am-form-group">
+		      <label>姓名</label>
+		      <input type="text" class="name" name="name" id="name"  placeholder="输入您的姓名">
+		    </div>
+		
+		    <div class="am-form-group am-hide">
+		      <label >联系电话</label>
+		      <input type="text" class="phone" name="phone" value="13484379290"  id="phone" placeholder="请输入您的联系电话">
+		    </div>
+		    <div class="am-form-group">
+		      <label >意见或建议</label>
+		      <textarea class=""  rows="5" name="text" id="text" placeholder="亲，您如果遇到什么问题，或者有什么意见或建议，欢迎向我们提出宝贵的意见"></textarea>
+		    </div>
+		    <div class="am-form-group">
+		    <p class="am-text-danger js_error"></p>
+		    </div>
+		    
+		    <a target-form="suggestForm" href="__SELF__" id="submit" disabled="disabled" class="ajax-post am-btn am-btn-block am-btn-danger am-disabled">提交</a>
+
+		  </fieldset>
+		</form>
+	</div>
+
+		
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+			$("#name").keyup(function(){
+				checkAll();
+			})
+			$("#phone").keyup(function(){
+				checkAll();
+			})
+		
+			$("#text").keyup(function(){
+				checkAll();
+			});
+			
+			function checkAll(){
+				var len = 0; 
+				var val=$("#name").val();
+			
+				for (var i = 0; i < val.length; i++) { 
+					if (val[i].match(/[^\x00-\xff]/ig) != null){
+						len += 2; 
+						if(len>16){
+							$(".js_error").text("姓名不超过16个字符");
+							disableSubmit();
+							return false;
+						}
+					}
+					else {
+						len += 1; 
+						if(len>16){
+							$(".js_error").text("姓名不超过16个字符");
+							disableSubmit();
+							return false;
+						}
+					}
+				}
+								
+				if($("#text").val().length>500){
+					$(".js_error").text("意见不得超过五百字");
+					disableSubmit();
+					return false;
+				}
+				
+				if($("#text").val().length  != 0  && $("#name").val().length != 0 && $("#phone").val().length != 0 ){
+					enableSubmit();
+				}else{
+					disableSubmit();
+				}
+				return ;
+			}
+			
+			function enableSubmit(){
+				$("#submit").removeAttr("disabled").removeClass("am-disabled");
+			}
+			function disableSubmit(){
+				$("#submit").attr("disabled","disabled").addClass("am-disabled");
+			}
+		</script>
+	
+</block>
+		

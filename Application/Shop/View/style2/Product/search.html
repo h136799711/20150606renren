@@ -1,0 +1,296 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<script type="text/javascript" src="__CDN__/amazeui-masonry/3.2.2/masonry.pkgd.min.js"></script>
+	<style type="text/css">
+		html{
+			font-size: 12px;
+		}
+		
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+		
+		.item-wrp .item{
+			width:40%;
+			margin: 0 5%;
+		}
+		.header{
+			font-size: 12px;
+		}
+		.header select{
+			  width: 64px;
+			  font-size: 12px;
+			  position: absolute;
+			  left: 5px;
+			  top: 8px;
+			  height: 30px;
+			  padding: 4px;
+			  border-right: 0px;
+		}
+		
+		.header .search-wrp{
+  padding: 8px 56px 8px 74px;
+		}
+		.header .search-wrp input{
+			padding: 5px;
+			font-size: 14px;
+			height: 30px;
+		}
+		.header i.am-icon-home{
+			position: absolute;
+		  width: 48px;
+		  color: #666666;
+		  right: 10px;
+		  font-size: 28px;
+		  top: 0px;
+		  color: #fff;
+		  text-align: center;
+		  line-height: 1.6;
+			
+		}
+		.am-topbar{
+			background: #73142A;
+			margin-bottom: 0px;
+		}
+		.filter{
+			text-align: center;
+		}
+		.filter a{
+			padding:10px;
+			color: #000000;
+			font-size: 14px;
+			width:25%;
+			box-sizing: border-box;
+			display: inline-block;
+			float: left;
+		}
+		.filter i.am-icon-caret-down{
+			font-size: 12px;
+			font-size: 10px;
+		}
+		.filter a.active{
+			color: #EA5019;
+			font-weight: bold;
+		}
+		.items-wrp{
+			padding:0px 5px;
+		}
+		.items-wrp .item{
+			border: 1px solid #F5DDDD;
+			height: 120px;
+			padding: 9px;
+			background: #fff;
+		}
+		.item .item-img {
+			float: left;
+			height: 100px;
+			width: 100px;
+		}
+		.item .item-img img{
+			height: 100px;
+			width: 100px;
+			
+		}
+		.item .item-desc{
+			font-size: 14px;
+			padding-left: 109px;
+		}
+		.item-desc .p-name {
+						
+			font-weight: bold;
+			font-size: 14px;
+			line-height: 16px;
+			color: #5E5454;
+			overflow: hidden;
+			height: 32px;
+		}
+		
+		.item-desc .p-price{
+			font-size: 16px;
+			line-height: 16px;
+			font-weight: 700;
+			color: #DD2727;
+			margin-top: 6px;
+  		}
+  		.items-wrp.grid .item{
+  			width:50%;
+  			float:left;
+  			height: 220px;
+  			margin-bottom: 5px;
+  			margin-top: 5px;
+  			background: #FAF2F2;
+  			padding: 5px;
+  			border: 0px;
+  		}
+  		.items-wrp.grid .item-img{
+  			float:left;
+  			width: 100%;
+  			text-align: center;
+  			background: #fff;
+  			padding: 10px;
+  			
+  		}
+  		
+  		.items-wrp.grid .item-img img{
+  			height: 100px;
+  			width: 100px;
+    		}
+  		
+		.items-wrp.grid .item .item-desc{
+			width: 100%;
+			padding-left: 0px;
+			float: left;
+  			padding: 10px;
+  			background: #fff;
+
+		}
+  		
+  		.items-wrp a{
+  			color:#333333;
+  		}
+  		.items-wrp.grid .item-desc .p-store{
+  			display:none;
+  		}
+	</style>
+</block>
+
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default">
+				<form class="am-form">
+				<select name="type">
+					<option value="1" <eq name="type" value="2">selected="selected"</eq> >商品</option>
+					<option value="2" <eq name="type" value="2">selected="selected"</eq> >店铺</option>
+				</select>
+				<div class="search-wrp">
+					<input type="text" class="am-form-control" value="{$q}" name="q" placeholder="搜索关键词" />
+				</div>
+				<a href="{:U('Shop/Index/index')}"><i class="am-icon-home"></i></a>
+			</form>
+		</div>
+	</div>
+	<div class="filter am-cf">
+		<a class="am-fl <eq name="sort" value="s">active</eq>" href="{:U('Shop/Product/search',array('sort'=>'s','layout'=>$layout))}">综合</a>
+		<a class="am-fl <eq name="sort" value="d">active</eq>" href="{:U('Shop/Product/search',array('sort'=>'d','layout'=>$layout))}">销量</a>
+		<if condition=" $sort eq 'pd' or $sort eq 's' or $sort eq 'd'">
+		<a class="am-fl" href="{:U('Shop/Product/search',array('sort'=>'p','layout'=>$layout))}">价格<i class="am-icon-arrow-down am-text-xs"></i></a>
+		</if>
+		<eq name="sort" value="p">	
+		<a class="am-fl" href="{:U('Shop/Product/search',array('sort'=>'pd','layout'=>$layout))}">价格<i class="am-icon-arrow-up am-text-xs"></i></a>
+		</eq>
+		<eq name="layout" value="list">
+		<a href="{:U('Shop/Product/search',array('sort'=>$sort,'layout'=>'grid'))}" class="am-fl "><i class="am-icon-th-list"></i></a>
+		<else/>
+		<a href="{:U('Shop/Product/search',array('sort'=>$sort,'layout'=>'list'))}" class="am-fl "><i class="am-icon-th-large"></i></a>
+		</eq>
+	</div>
+	<div class="items-wrp {$layout}  am-cf" data-am-scrollspy="{animation:'fade'}"	data-am-scrollspy="{animation:'fade', delay: 300}">
+		<volist name="list" id="vo">
+			<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+			<div  class="item  am-cf" >
+				<div class="item-img ">
+					<img class="am-responsive-width" src="{$vo.main_img}"alt="图片" />
+				</div>
+				<div class="item-desc">
+					<div class="p-name">{$vo.name}</div>
+					<div class="p-price am-text-danger">¥{:number_format($vo['price']/100.0,1)}</div>
+					<div class="p-sales">月销: {$vo['_sales']}</div>
+					<div class="p-store" style="font-size: 12px">{$vo.storename} {$vo.loc_province} {$vo.loc_city}</div>
+				</div>
+			</div>
+			</a>
+		</volist>		
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	<include file="style1/partial/footermenu" />
+	<script type="text/javascript">
+		
+		function appendItem(item){
+			var $wrapper = $(".items-wrp");
+			var $ele = $("<div class='item am-cf'></div>");
+			$wrapper.append($ele);		
+			
+			var itemHtml = "<a href=\"{:U('Shop/Product/detail')}?id="+item.id+"\">";
+			
+			itemHtml += "<div class='item-img'><img class='am-responsive-width' src='"+item.main_img+"' alt='图片'/></div>";			
+			itemHtml += "<div class='item-desc'>";
+			itemHtml += "<div class='p-name'>"+item.name+"</div>";
+			itemHtml += "<div class='p-price am-text-danger'>¥"+(item.price/100.0)+"</div>";
+			itemHtml += "<div class='p-sales'>月销: "+item._sales+"</div>";
+			itemHtml += "<div class='p-store' style='font-size: 12px'>"+item.storename+item.loc_province+item.loc_city+"</div>";
+			itemHtml += "</div></a>";
+			$ele.html(itemHtml);
+		}
+		
+		function appendList(){		
+			if(window.ajaxing ){
+				console.log("cache");
+				return ;	
+			}
+			var q = $(".header input[name='q']").val();
+			var type = $(".header select[name='type']").val();
+			window.ajaxing = false;
+			$.ajax({
+				type:'post',
+				url:"{:U('Shop/Product/search')}",
+				data:{q:q,p:window.myshop.p},
+				dataType:"json",
+				beforeSend:function(){
+					window.ajaxing = true;
+				}
+			}).always(function(){
+				window.ajaxing = false;
+			}).done(function(data){
+				
+//				console.log(data);
+				if(data.status){
+//					console.log(data.info);
+					window.myshop.p++;
+					if(data.info){						
+						for(var i=0;i<data.info.length;i++){
+							console.log(data.info[i]);
+							appendItem(data.info[i]);
+						}
+				
+					}else{
+						//TODO: 没有数据了
+						
+					}
+					
+					
+				}else{
+					alertMsg(data.info);
+				}
+			});
+		}
+		
+		
+		$(function(){
+			window.myshop = { p : 1 };
+			
+			$(window).on("scroll",function(ev){
+				if($(document).height() - $(window).height() - $(window).scrollTop() < 50){
+//					console.log("trigger");
+					appendList();
+				}
+//				console.log(ev);
+			});
+			
+		})
+		
+	</script>
+</block>
+

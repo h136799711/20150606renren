@@ -1,0 +1,56 @@
+<extend name="template/base_index" />
+<block name="area_header">
+	 <base href="{:C('SITE_URL')}/" />
+
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="__CSS__/withdraw.css?v=__APP_VERSION__"/>
+	<style type="text/css">
+		.header .am-topbar{
+			font-size: 0.4rem;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+	</style>
+	<script type="text/javascript">
+		function toURL(url){
+			window.location.href=url;	
+		}
+	</script>
+</block>
+<block name="area_body">
+		<div class="header">
+			<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;返回</a></div>
+		</div>
+		<div class="div_main">
+			
+			<table class="am-table am-table-bordered am-table-striped am-table-compact">
+			  <thead>
+				  <tr>
+				   	<th style="text-align: center;">提取时间</th>
+					<th style="text-align: center;">提取金额(元)</th>
+				  </tr>
+			  </thead>
+			  <tbody>
+			  	
+				 <empty name="recordList">
+					<tr>
+						<td colspan="2">没有相关记录</td>
+					</tr>
+				<else/>
+			  	  <volist name="recordList" id="rl">
+					<tr>
+						<td>{$rl.create_time|date='Y-m-d H:i:s',###}</td>
+						<td>{$rl['minus']/100}</td>
+					</tr>
+				</volist>
+				</empty>
+			  </tbody>
+			</table>
+		</div>
+		
+</block>		
+
+<block name="area_footer">
+
+</html>

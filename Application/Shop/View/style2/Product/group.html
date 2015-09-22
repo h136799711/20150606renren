@@ -1,0 +1,237 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<script type="text/javascript" src="__CDN__/amazeui-masonry/3.2.2/masonry.pkgd.min.js"></script>
+	<style type="text/css">
+		html{
+			font-size: 12px;
+		}
+		
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+		
+		
+		.product-list{			
+			width:100%;
+			box-sizing: border-box;
+			margin: 0.2rem 0;
+			text-align: center;
+		}
+		.product-list .product-wrp{
+			display: inline-block;
+			padding: 10px;
+		}
+		
+		.product-list .product-item{
+			padding: 10px;
+			border-radius: 8px;
+		    padding-bottom: 2px;
+			height: 100%;
+			box-sizing: border-box;
+			position: relative;
+			background-color: #FFFFFF;
+			overflow: hidden;
+		}
+		.product-list .p-price{
+			box-sizing: border-box;
+			border-top: 1px dashed #ddd;
+			height: 56px;
+			line-height: 26px;
+			font-size: 14px;
+			color: #ff5000;
+		}
+		.product-list .p-name{
+			font-size: 12px;
+			margin: 10px;
+			color: #666;
+			height: 32px;
+			overflow: hidden;
+			line-height: 1.2;
+			position: relative;
+			word-break: break-all;
+		}
+		.product-list .p-main-img img{
+			width:100%;
+			height: 120px;
+		}
+		.product-list .p-price del{
+			color:#9e9e9e;
+			margin-left: 5px;
+  			font-size: 12px;
+		}
+		.product-list .zk{
+			  position: absolute;
+			  top: 0px;
+			  left: -8px;
+			  background: #ff4400;
+			  width: 75px;
+			  text-align: center;
+			  font-size: 12px;
+			  color: #fff;
+			  transform:rotateZ(-45deg) translateX(-12px);
+			  -webkit-transform: rotateZ(-45deg) translateX(-12px);
+			  -moz-transform: rotateZ(-45deg) translateX(-12px);
+			  
+		}
+		
+		.am-topbar {
+			line-height: 50px;
+		}
+		[class*=am-u-]+[class*=am-u-]:last-child {
+		  float: left;
+		}
+	</style>
+</block>
+
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default">
+			<a href="{:U('Shop/Index/index')}">
+			<i class="am-icon-chevron-left"></i>&nbsp;&nbsp;
+			活动商品	
+			</a>
+		</div>
+	</div>
+	
+	
+	<!--<div class="filter am-cf">
+		<a class="am-fl <eq name="sort" value="s">active</eq>" href="{:U('Shop/Product/group',array('sort'=>'s','layout'=>$layout))}">综合</a>
+		<a class="am-fl <eq name="sort" value="d">active</eq>" href="{:U('Shop/Product/group',array('sort'=>'d','layout'=>$layout))}">销量</a>
+		<if condition=" $sort eq 'pd' or $sort eq 's' or $sort eq 'd'">
+		<a class="am-fl" href="{:U('Shop/Product/group',array('sort'=>'p','layout'=>$layout))}">价格<i class="am-icon-arrow-down am-text-xs"></i></a>
+		</if>
+		<eq name="sort" value="p">	
+		<a class="am-fl" href="{:U('Shop/Product/group',array('sort'=>'pd','layout'=>$layout))}">价格<i class="am-icon-arrow-up am-text-xs"></i></a>
+		</eq>
+		<eq name="layout" value="list">
+		<a href="{:U('Shop/Product/group',array('sort'=>$sort,'layout'=>'grid'))}" class="am-fl "><i class="am-icon-th-list"></i></a>
+		<else/>
+		<a href="{:U('Shop/Product/group',array('sort'=>$sort,'layout'=>'list'))}" class="am-fl "><i class="am-icon-th-large"></i></a>
+		</eq>
+	</div>-->
+	<div class="items-wrp product-list  am-cf" data-am-scrollspy="{animation:'fade'}"	data-am-scrollspy="{animation:'fade', delay: 300}">
+		
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	
+	<script id="producttemplate" type="text/x-handlebars-template">
+		{{#each data}}
+				<div class="product-wrp am-u-sm-6">
+					<div class="product-item">
+						<a href="{:U('Shop/Product/detail')}?id={{id}}">
+						<div class="p-main-img" ><img src="{{main_img}}" class="" alt="{$vo.name}"/></div>
+						<div class="p-name" >{{name}}</div>
+						<div class="p-price" >¥{{price}}<del>¥{{ori_price}}</del></div>
+						<i class="zk">{{_zk_percent}}折</i>
+						</a>
+					</div>
+				</div>
+		{{/each}}
+	</script>
+	
+	<script type="text/javascript" src="__CDN__/handlebar/3.0.3/handlebars.js?v=1.0"></script>
+	<script type="text/javascript">
+	
+	var boye = (function($){
+		var options = {
+			template: "",
+			ajaxing: false,
+			p: 1,
+			url: '',
+			container:'.product-wrp',
+			getParams:function(){ return {};} //获取参数
+		};
+		/**
+		 * 
+		 * @param {Object} item 
+		 * @param {Object} url 请求
+		 * @param {Object} container
+		 */
+		function init(item,url,container,getParams){
+			var source = $(item).html();
+			options.template = Handlebars.compile(source);
+			options.url = url;
+			options.container = container;
+			options.getParams = getParams || options.getParams;
+			bind();
+			
+		}
+		
+		/**
+		 * 获取产品
+		 */
+		function queryProducts(){
+			var data = $.extend(true, { p: options.p++ }, options.getParams());
+			console.log(data);
+			$.ajax({
+				url: options.url,
+				type:"POST",
+				data:data,
+				beforeSend:function(){
+					
+				}
+			}).done(function(data){
+				
+				console.log(data);
+				if(data.status){
+					var html = options.template({data:data.info});
+					
+					$(options.container).html($(options.container).html()+html);
+					
+					
+				}else{
+					alertMsg(data.info);
+				}
+				
+			}).always(function(){
+				
+				//always			
+				
+			});
+			
+		}
+		
+		function bind(){
+			$(window).on("scroll",function(ev){
+				if($(document).height() - $(window).height() - $(window).scrollTop() < 50){
+					queryProducts();
+				}
+			});
+		}
+		//
+		return {
+			queryProducts:queryProducts,
+			init:init,
+		}
+		
+	})($)
+	
+	</script>
+	
+	<script type="text/javascript">
+		
+		
+		$(function(){
+			boye.init("#producttemplate","{:U('Shop/Product/group')}",".items-wrp",function(){
+				var groupid = "{$groupid}";
+				return { groupid: groupid};
+			});
+			boye.queryProducts();
+		})
+		
+	</script>
+</block>
+

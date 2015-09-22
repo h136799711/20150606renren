@@ -1,0 +1,188 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	
+	<style type="text/css">
+		html{
+			font-size: 12px;
+		}
+		.header{
+			background: #FFFFFF;
+			font-size: 16px;
+		}.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+		.am-with-topbar-fixed-top {
+		  padding-top: 42px;
+		}
+		.store-detail .banner img{
+			width:100%;
+			height:140px;
+		}
+		.store-detail {
+  			background: #fff;
+  		}
+		.store-detail .store-info{
+			font-size: 12px;
+			width: 100%;
+			padding: 10px;
+			position: absolute;
+			margin-top: -36px;
+			height: 60px;
+			color: #FFFFFF;
+			font-size: 14px;
+			line-height: 120%;
+		}
+		.store-detail .store-desc{
+			width:100%;
+			color: #333;
+		  font-size: 14px;
+		  margin-top: 30px;
+		  padding: 10px;
+		  height: 60px;
+		  overflow: hidden;
+		}
+		.rank{
+			width: 100%;
+			display: block;
+			margin-top: 7px;
+		}
+		.rank i{
+			width:16px ;
+			height: 16px;
+		    display: inline-block;
+		 }
+		.rank-1{
+			background: url(__IMG__/rank/1.gif) no-repeat;
+		}
+		.rank-2{
+			background: url(__IMG__/rank/2.gif) no-repeat;
+		}
+		.rank-3{
+			background: url(__IMG__/rank/3.gif) no-repeat;
+		}
+		.rank-100{
+			background: url(__IMG__/rank/100.gif) no-repeat;
+		}
+		/**
+		 * 商品样式
+		 */
+		.item-wrp{
+		  float: left;
+		  margin: 0px;
+		  width: 100%;
+		  padding: 5px;
+		  font-size: 12px;
+		 }
+		.item { width: 100%; 
+		  background: #fff;
+		  border: 1px solid #ECCCCC;}
+		 .item .p-desc{
+		  	padding: 5px;
+		 }
+		.item img{
+			width:100%;
+		}
+		.product-wrp .product-list {
+			width:50%;
+		}
+	</style>
+</block>
+
+<block name="area_body">
+
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;{$vo.name}店铺</a> <a href="{:U('Shop/Index/index')}"><i class="am-icon-home am-icon-sm am-fr"></i></a></div>
+		
+	</div>
+	
+	<div class="store-detail am-cf am-margin-bottom-xs" >
+		<div class="banner">
+			<img class="am-responsive-width" src="{$vo.banner}" />
+		</div>
+		<div class="store-info am-cf" >
+			<img src="{$vo.logo}" class="am-fl am-thumbnail am-margin-right-xs am-margin-bottom-xs" style="width:48px;height:48px;"/>
+			<div class="am-fl">
+			<span class="am-">{$vo.name}</span>
+			<span class="rank">
+			<for start="0" end="$rank['loop']">
+				<i class="rank rank-{$rank['type']}"></i>
+			</for>
+			</span>
+			</div>
+		</div>
+		<div class="store-desc am-fl">
+			{$vo.notes}
+		</div>
+	</div>
+	<div class="am-padding-xs">
+		
+		<span class="am-text-sm am-text-center">全部商品</span>
+		<hr>
+		<div class="product-wrp am-cf">
+		<div class="product-list am-fl">
+			<volist name="products" id="vo">
+				<if condition='$key%2 eq 0' >
+				<div class="item-wrp">
+					<div class="item ">
+							<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}"> 
+						<img src="{$vo.main_img}"  alt="商品图片" />
+						<div class="p-desc">
+							<div class="p-name">{$vo.name}</div>
+							<div class="p-price"><span class="am-text-danger">¥{:number_format($vo['price']/100.0,1)}</span> <del>{:number_format($vo['ori_price']/100.0,1)} </del></div>
+							
+							<div class="p-sales">月销: {$vo._sales}</div>
+						</div>
+						</a>
+					</div>
+				</div>
+				</if>
+			</volist>
+		</div>
+		<div class="product-list am-fl">
+			<volist name="products" id="vo">
+				<if condition='$key%2 eq 1' >
+					<div class="item-wrp">
+						<div class="item">
+							<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}"> 
+							<img src="{$vo.main_img}"  alt="商品图片" />
+							<div class="p-desc">
+								<div class="p-name">{$vo.name}</div>
+								<div class="p-price"><span class="am-text-danger">¥{:number_format($vo['price']/100.0,1)}</span> <del class="am-link-muted">{:number_format($vo['ori_price']/100.0,1)} </del></div>
+								
+								<div class="p-sales">月销: {$vo._sales}</div>
+							</div></a>
+						</div>
+					</div>
+				</if>
+			</volist>
+		</div>
+		</div>
+	</div>
+</block>
+<block name="area_footer">
+	
+	<script type="text/javascript" src="__CDN__/amazeui-masonry/3.2.2/masonry.pkgd.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			
+		});
+	
+	</script>
+
+</block>

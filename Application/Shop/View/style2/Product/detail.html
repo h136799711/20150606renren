@@ -1,0 +1,850 @@
+<extend name="template/base_index2" />
+<block name="area_header">
+	<link rel="stylesheet" type="text/css" href="__CSS__/detail.css?v=__APP_VERSION__" />
+	<script type="text/javascript" src="__CDN__/amazeui-lazyload/1.9.3/amazeui.lazyload.min.js"  ></script>
+	<style type="text/css">
+
+		.onlyone{
+			width:90%!important;
+		}
+		.score{
+		  	background: url(__IMG__/star.png) no-repeat;
+		  	text-align: left;
+		  	width: 130px;
+		}
+		
+		
+		.score1 {
+			background-position: -104px -60px;
+		}
+		.score2 {
+			background-position: -78px -60px;
+		}
+		.score3 {
+			background-position: -52px -30px;
+		}
+		.score4 {
+			background-position: -26px -30px;
+		}
+		.score5 {
+			background-position: 0 -30px;
+		}
+		
+		.p-content .am-tabs-default ul li.am-active a{
+			border-bottom:2px solid #85AFD3 ;
+			background:lightgray;
+		}
+		
+		
+		.countStyle{
+			background: white;
+			border: 1px solid #ccc;
+			text-align: center;
+			height: 25px;
+			border-radius: 0;
+			list-style: none;
+			padding:0px;
+			-webkit-appearance: none;
+		}
+
+
+		.am-link-muted{font-size: 12px;color: #ccc;text-align: right}
+		/*.p-content .am-tabs-nav li.am-active{border-top: 2px solid pink;}*/
+		.p-content  .am-tabs{width: 100%;margin-left: 0}
+		.p-content .am-tabs-default ul li a{background: #F1F1F1;border: 1px solid #ccc;}
+		.p-content .am-tabs-default ul li.am-active a{background:white;border-bottom:none;color:#FF8040;border-top:3px solid #FF8040 }
+	</style>
+</block>
+
+<block name="area_body">
+	<form class="js_product_form" method="post" action="{:U('Shop/Orders/confirm')}">
+		<input type="hidden" name="p_id" value="{$product.id}" />
+		<input type="hidden" name="price" id="price" value="{$product.price}" />
+		<input type="hidden" name="count" id="count" value="1" />
+		<div class="detail-page">
+			<div class="btn-controls">
+			<a href="javascript:history.back(-1);" class="back"><i class="am-icon-chevron-left"></i></a>
+			<a href="{:U('Shop/ShoppingCart/index')}" class="shopping-cart"><i class="am-icon-shopping-cart"></i></a>
+		</div>
+
+		<!--
+        	作者：hebiduhebi@126.com
+        	时间：2015-04-23
+        	描述：图片滚动
+        -->
+		<div data-am-widget="slider" style="height: 270px;" class="am-slider am-slider-a5" data-am-slider='{&quot;directionNav&quot;:false}'>
+		  <ul class="am-slides">
+		  	<volist name="banners" id="vo">
+		  		<li>
+		  			<a href="#view">
+		  				<img src="{$vo}" alt="{$vo}" style="  height: 270px;" />
+		  			</a>
+		  		</li>
+		  	</volist>
+		  </ul>
+		</div>
+		<div class="p-info">
+			<p class="p-name">{$product.name}</p>
+			<div class="p-price" >
+				<p class="" style="">价格:<font color="orangered" size="+1">¥{:number_format($product['price']/100,2)}</font>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量:
+				<input type="button" class="countStyle" onclick="subtract()" value="-" style="width: 25px;" /><input type="text" name="sku_count" size="5"  value="1" class="countStyle" onchange="checkNum()"/><input type="button" class="countStyle"  onclick="add()" value="＋" style="width: 25px" />
+
+				</p>
+				<p class="lgray p-ori-price">原价:<del>¥{:number_format($product['ori_price']/100,2)}</del>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<font color="#666">库存:<font>{$product.quantity}</font></font>
+					<input type="hidden" id="quantity" value="{$product.quantity}" />	
+					
+				</p>
+			</div>
+			<ul class="am-avg-sm-3 am-list p-extra lgray">
+				<li class="am-text-left" ><if condition="$product['attrext_ispostfree'] eq 1" >包邮<else/>{$express_str}</if></li>
+				 
+				<li class="am-text-center">月销：{$monthlySales}</li>
+				<li class="am-text-right">{$product.loc_city}</li>
+			</ul>
+		</div>
+		<!--
+        	作者：hebiduhebi@126.com
+        	时间：2015-05-07
+        	描述：商品的扩展属性
+        -->
+		<div style="font-size: 14px;" class="p-ext am-text-sm am-link-muted am-margin-bottom-sm">
+			<div class="up-border"></div>
+			<div class="up-decorate-left"></div>
+			<div class="up-decorate-right"></div>
+			<div class="wrapper am-g am-padding-sm am-text-left  ">
+
+				<if condition="$product['attrext_ishasreceipt'] eq 1">
+					<div class="service-item am-margin-right-sm">
+						<i class="am-icon-check-circle-o  am-text-danger  am-margin-right-xs"></i>支持发票
+					</div>
+				</if>
+				<!--
+				<div class="service-item am-margin-right-sm">
+					<i class="am-icon-check-circle-o  am-text-danger  am-margin-right-xs"></i>1小时内送货上门
+				</div>-->
+				<if condition="$product['attrext_isunderguaranty'] eq 1">
+					<div class="service-item am-margin-right-sm">
+						<i class="am-icon-check-circle-o  am-text-danger  am-margin-right-xs"></i>支持保修
+					</div>
+				</if>
+				<if condition="$product['attrext_issupportreplace'] eq 1">
+					<div class="service-item am-margin-right-sm">
+						<i class="am-icon-check-circle-o  am-text-danger  am-margin-right-xs"></i>支持退换货
+					</div>
+				</if>
+			</div>
+			<div class="bottom-border"></div>
+		
+		</div>
+		
+		<eq name="product['has_sku']" value="1">
+		
+		<!--
+        	作者：hebiduhebi@126.com
+        	时间：2015-04-23
+        	描述：弹出SKU选择
+        -->
+		<div class="p-pro am-padding-sm am-text-sm am-margin-bottom-sm">
+			<div class="d-sku js_sku am-pading-sm am-text-sm">
+				请选择商品规格<i class="am-icon-chevron-right am-fr"></i>
+			</div>
+		</div>
+		
+		
+		</eq>
+		
+		<!--
+        	作者：hebiduhebi@126.com
+        	时间：2015-04-23
+        	描述：店铺信息
+        -->
+        <!--
+		<div class="p-shop am-cf" data-spm="shop">
+			<div class="p-logo">
+				<img class="am-circle" src="{$wxstore['logo']}">
+			</div>
+			<div class="p-desc am-cf">
+				{$wxstore['name']} <br/>
+				
+				<i class="am-icon-weixin color-weixin am-margin-right-xs"></i>微信号：<span class=" am-margin-right-xs">{$wxstore['wxno']}</span>
+				
+			</div>
+			<div class=" am-g am-padding-sm am-text-sm am-fl">
+				<a class="am-u-sm-6 am-text-center" href="tel:{$wxstore['service_phone']}"><i class="am-icon-phone color-weixin am-margin-right-xs "></i><font size="-1">点击联系商家</font></a>
+				
+				<a class="am-u-sm-6 am-text-center" href="{:U('Tool/BaiduMap/index',array('title'=>$wxstore['name'],'text'=>'电话: '.$wxstore['service_phone'],'lat'=>$wxstore['latitude'],'lng'=>$wxstore['longitude']))}"><i class="am-icon-map-marker"></i><font size="-1">商家地图位置</font></a> 
+			</div>
+			<div class="p-quick am-cf">-->
+				<!--
+                	作者：hebiduhebi@126.com
+                	时间：2015-04-23
+                	描述：单店铺－所有宝贝查看
+              
+				<a class="c-btn" href="{:U('Shop/Wxstore/allCategory',array('id'=>$product['storeid']))}" style="border-right: 1px solid #FAE4E4;">
+					<span><i class="am-icon-th-list"></i>查看所有商品
+					</span>
+				</a>  -->
+				<!--
+                	作者：hebiduhebi@126.com
+                	时间：2015-04-23
+                	描述：单店铺查看
+               
+				<a href="{:U('Shop/Wxstore/view',array('id'=>$product['storeid']))}" class="">
+					<span><i class="am-icon-university"></i>
+						进入店铺
+					</span>
+				</a>
+			</div>
+		</div>
+		 -->
+		<!-- 1. 商品详情
+			 2. 产品参数
+			-->
+		<div class="p-content">
+			<div data-am-widget="tabs"  class="am-tabs am-tabs-default">
+				<ul class="am-tabs-nav am-cf" id="detail-tabs">
+					<li class="am-active" style=" ">
+						<a href="[data-tab-panel-0]" style="font-size: 1.2rem;border-left:none">图文详情</a>
+					</li>
+					<li class="">
+						<a href="[data-tab-panel-1]" style="font-size: 1.2rem;">产品参数</a>
+					</li>
+					<li class="">
+						<a href="[data-tab-panel-2]" data-item="evaluation" style="font-size: 1.2rem;border-right:none">累计评价</a>
+					</li>
+				</ul>
+				<div class="am-tabs-bd" >
+					<div data-tab-panel-0 class="am-tab-panel am-active">
+						<!--
+                        	作者：hebiduhebi@126.com
+                        	时间：2015-04-23
+                        	描述：图文详情
+                        -->
+                        <empty name="details">
+                        	<center style="color:#999">暂无详情</center>
+                        <else />
+						<volist name="details" id="vo">
+							<?php
+							 if($vo->type == 'text'){
+								
+								echo $vo->ct;
+							}else{
+								echo "<img class='am-responsive-width lazy' data-original='".$vo->ct."' />";
+							} ?>
+						</volist>
+						</empty>
+					</div>
+					<div data-tab-panel-1 class="am-tab-panel ">
+					
+						<ul class="am-list am-cf p-propvalue-list">
+						<volist name="properties" id="vo">
+							  <li class="am-cf" ><div class="lgray am-fl" style="width: 100px;margin-right: 10px;">{$vo.name}</div><div class=" am-fl omit">{$vo.value}</div></li>				
+						</volist>
+						</ul>	
+					</div>	
+					<div data-tab-panel-2 class="am-tab-panel comments">
+						<div class="loading">
+							<i class="am-icon-spinner am-icon-spin"></i>
+						</div>
+					</div>
+				</div>
+	
+			</div>
+		</div>
+		
+		<div class="footer-menu btn-controls">
+		     <!-- <a data-am-loading="{spinner: 'circle-o-notch', loadingText: '放入购物车...'}" href='#' onclick='addToCart();'  class="js_add_to_cart am-btn-sm am-btn am-btn-primary"  style="border-radius:10px;background:#B0FF54 ;border: 1px solid #B0FF54;">
+		        <span class="add-cart">放入购物车</span>
+		      </a>
+		     
+		      <a  href="#" onclick="return buyProduct();"  class=" am-btn am-btn-sm  am-btn-danger" style="border-radius:10px;background:#FF54B0 ;border: 1px solid #FF54B0;">
+		        <span class="buy">立即购买</span>
+		      </a>
+		      
+		    -->
+				<!--
+		      <span  style="background:#FF8000;padding: 0.4rem 3.5rem;font-size: 1rem;color: white;font-family: '微软雅黑'; border-radius: 0.2rem;" onclick='return buyProduct()'><font class="am-icon-dollar"></font>&nbsp;立即购买</span>
+		      <span  style="background: white;margin-left:0.2rem;padding: 0.4rem 3.5rem;font-size:1rem;font-family: '微软雅黑';border-radius: 0.2rem" onclick="addToCart()" ><font class="am-icon-shopping-cart"></font>&nbsp;放入购物车</span>-->
+			<div style="float: left;padding-top:0.3rem;padding-bottom:0.3rem; width: 48%;font-size: 1rem;border-radius: 0.2rem;background:#FF8000;margin-left:1.5%;color: white;" onclick="return buyProduct()"><font class="am-icon-dollar"></font>&nbsp;立即购买</div>
+			<div style="float: left;padding-top:0.3rem;padding-bottom:0.3rem; width: 48%;font-size: 1rem;border-radius: 0.2rem;background: white;margin-left:2%;" onclick="addToCart()"><font class="am-icon-shopping-cart"></font>&nbsp;放入购物车</div>
+		</div>
+		<eq name="product['has_sku']" value="1">
+		
+		<div class="sku-panel-mask js_hide" style="opacity:0;left:100%">
+		
+		<div class="sku-panel">
+			<i class="close am-icon-times-circle"></i>
+			<div class="sku-info am-cf">
+				<img class="js_sku_icon_url am-thumbnail am-fl  am-responsive-width am-radius" src="{$product.main_img}" alt=""   />
+				<div class="sku-ext am-fl">
+					<span>¥<span  class="js_sku_price">{:($product['price']/100.0)}</span></span>
+					<span>库存<span class="js_sku_quantity">{$product.quantity}</span>件</span>
+					<span class="js_checked_info lgray"></span>
+				</div>
+			</div>
+			<div class="sku-list">
+				<volist name="sku_arr" key="k" id="vo">
+					<div class="sku-name">{$vo['sku_name']}</div>
+					<div class="sku-value-list am-cf">
+						<volist name="vo.sku_value_list" id="sku_value">
+							<div class="value-item am-fl" data-sku="{$vo['id']}:{$sku_value['id']};">
+								{$sku_value['name']}
+							</div>
+						</volist>
+					</div>
+				</volist>
+				<div class="sku-count am-cf">
+				<span class="am-fl">购买数量</span> 
+				<div class="am-fr am-form-group">
+				    <i class="js_minus am-icon-minus am-fl am-disabled"  ></i>
+					<input type="hidden" name="sku_count" autocomplete="off"  class="am-fl am-form-field" value="1" />
+					<span class="sku_count am-fl " style="width: 48px;float: left;text-align: center;padding: 4px;border: 1px solid #DFADAD;">1</span>
+				    <i class="js_plus am-icon-plus am-fl"></i>
+				 </div>
+			</div>
+			</div>
+			<!--
+			<div class="btn-controls">				
+			    <a data-am-loading="{spinner: 'circle-o-notch', loadingText: '加入购物车...'}" href='#' onclick='addToCart();' class="js_add_to_cart am-btn am-btn-primary">
+			       <span class="add-cart">加入购物车</span>
+			    </a>
+			    <a href="#" onclick="return buyProduct();" class="js_buy am-btn am-btn-danger">
+			      <span class="buy">立即购买</span>
+			    </a>
+			</div>
+			-->
+		</div>
+
+		</div>
+		
+		<div>
+			<!-- 存在此input 即表示需要选择规格 -->
+			<input  type="hidden" name="sku_desc" id="hebidu_sku_desc" />
+			<input  type="hidden" name="hebidu_skuchecked" id="hebidu_skuchecked" />
+		</div>
+		</eq>
+	</form>
+</block>
+
+<block name="area_footer">
+	
+	<script type="text/javascript" src="__CDN__/handlebar/3.0.3/handlebars.js?v=1.0"></script>
+	
+	
+	
+	<script id="commenttemplate" type="text/x-handlebars-template">
+		<ul class="am-list">
+		{{#each data}}
+			<li class="am-padding-sm am-text-sm">
+				<div>
+					<img src="{{_userlogo}}" style="width: 36px;" class="am-responsive-width am-circle" />
+					{{_encrypt_nickname}}
+					<div class="score score{{score}} am-fr"><i>&nbsp;</i></div>
+				</div>
+				<div>{{comment}}</div>
+				<div class="am-link-muted">{{_createtime}}</div>
+			</li>
+		{{/each}}
+		</ul>
+	</script>
+	<script type="text/javascript">
+		function addToCart(){
+			if(checkHasSku(0)){
+			
+				var checked=false,that=".footer-menu .js_add_to_cart";
+				
+				//POST参数
+				var query = $(".js_product_form").serialize(); 
+				var lm;
+				$.ajax({
+					type:"POST",
+					url:"{:U('Shop/ShoppingCart/addItem')}",
+					data:query,
+					async:true,
+					beforeSend:function(){
+						lm = loadingMsg("请求中...");
+					}			
+				}).always(function() {
+					if(lm){
+						lm.modal("close");
+					}
+//					$(that).button("reset");
+				}).done(function(data) {
+					if (data.status == 1) {
+						alertMsg("成功添加到购物车!");
+						hideSku();
+					} else {
+						alertMsg(data.info);				
+					}
+				});
+
+			}
+		}
+		function buyProduct(){
+			
+			if(checkHasSku(1)){
+
+				var checked=false,that=".footer-menu .js_add_to_cart";
+				
+				//POST参数
+				var query = $(".js_product_form").serialize(); 
+				var lm;
+				$.ajax({
+					type:"POST",
+					url:"{:U('Shop/ShoppingCart/addItem')}",
+					data:query,
+					async:true,
+					beforeSend:function(){
+						lm = loadingMsg("请求中...");
+					}			
+				}).always(function() {
+					if(lm){
+						lm.modal("close");
+					}
+//					$(that).button("reset");
+				}).done(function(data) {
+					if (data.status == 1) {
+						window.location.href = "{:U('Shop/ShoppingCart/index')}";
+						hideSku();
+					} else {
+						alertMsg(data.info);				
+					}
+				});
+				
+//				$(".js_product_form").submit();
+			}
+		}
+		/**
+		 * 检测是否已经显示规格窗口
+		 * @return true 是
+		 */
+		function hadShow(){
+			return $(".sku-panel-mask").css("opacity") == 1;
+		}
+		/**
+		 * 检测是否选择了商品规格信息
+		 */
+		function checkHasSku(which){
+			var skuFlag = $("#hebidu_skuchecked");//.length;
+			if(skuFlag.length == 0){
+				return true;
+			}
+			if(skuFlag.length == 1 && skuFlag.attr("data-checked") == "true"){
+				return true;
+			}
+			
+			if(hadShow()){
+				alertMsg("请选择商品规格！");
+			}else{
+				showSku(which);
+			}
+			return false;
+			
+		}
+		
+		<eq name="product['has_sku']" value="1">
+		
+		
+	
+		/**
+		 * 设置选中SKU的信息
+		 * @param {Object} sku
+		 */
+		function setCheckedSku(sku){
+			//需要选择的SKU数目
+			var len = $(".sku-list .sku-name").length;
+			//已选择SKU数目
+			var checked = $(".sku-list .value-item.checked");
+			var allSkuName = $(".sku-list .sku-name");
+			var checked_info ="";
+			var not_checked_info ="";
+			var checked_ids = "";
+			for(var i=0;i < allSkuName.length;i++){
+				var checked_sku = $(allSkuName[i]).next(".sku-value-list").find(".value-item.checked");
+				if(checked_sku.length == 1){
+					if(checked_info.length > 0){
+						checked_ids += checked_sku.attr("data-sku");
+						checked_info = checked_info + ",\""+$(checked_sku).text().trim()+"\"";
+					}else{
+						checked_ids = checked_sku.attr("data-sku");
+						checked_info = "\""+$(checked_sku).text().trim()+"\"";
+					}
+				}else{
+					if(not_checked_info.length > 0){
+						not_checked_info = not_checked_info + ","+$(allSkuName[i]).text().trim()+"";
+					}else{
+						not_checked_info = $(allSkuName[i]).text().trim();
+					}
+				}
+			}
+//			console.log(not_checked_info);
+			
+			//指示 是否已经选择过商品规格，表示是否可以直接购买以及加入购物车。
+			window.hasChoosed = false;
+			if(checked_info.length > 0){
+				$(".sku-info .js_checked_info").text("已选:"+checked_info);
+				$("#hebidu_sku_desc").val(checked_info);
+				if(not_checked_info.length > 0){
+					$(".sku-info .js_checked_info").html($(".sku-info .js_checked_info").text()+";还未选: <span style='color:#333;'>"+not_checked_info+"</span>");				
+				}else{
+					window.hasChoosed = true;
+				}
+			}else{
+				$(".sku-info .js_checked_info").text("");
+			}
+			
+			$("#hebidu_skuchecked").val(checked_ids);
+			changeSku();
+//			console.log(len - checked.length > 1);
+			if(len - checked.length == 0){
+				disabledSku(checked_ids,true);
+			}else if(len - checked.length == 1){
+				disabledSku(checked_ids);
+			}else if(len - checked.length > 1){
+				$(".sku-list .value-item.disabled").removeClass("disabled");
+			}
+		}
+		
+		/**
+		 * 禁用库存为0 的
+		 * @param {Object} checked_ids
+		 */
+		function disabledSku(checked_ids,loop){
+			$(".sku-list .value-item.disabled").removeClass("disabled");
+			var ids = checked_ids.split(";");
+			ids.pop();
+			var list = $(".sku-list .value-item");
+			//遍历规格值
+			for(sku_key in window.sku_list ){
+//				console.log(sku_key);
+				var current_sku = window.sku_list[sku_key];
+				if(current_sku.quantity > 0){
+					continue;
+				}
+				
+				var last_sku_id = sku_key;
+				
+				if(loop){
+					
+					for(var i=0;i<ids.length;i++){
+						
+						for(var j=0;j<ids.length;j++){
+							
+							if(i != j ){
+								
+								last_sku_id = last_sku_id.replace(ids[j]+";","");
+								
+							}
+							
+						}
+						
+						list.each(function(index,item){
+							if($(item).attr("data-sku") == last_sku_id){
+								$(item).addClass("disabled");
+								return false;
+							}
+						});
+					}
+					
+				}else{
+					
+					for(tmp in ids){
+						
+						if(last_sku_id.indexOf(ids[tmp]) >= 0){
+							last_sku_id = last_sku_id.replace(ids[tmp]+";","");
+						}
+						
+					}
+					
+					//last_sku_id 表示当前规格中剩下的规格值，替换掉选中的规格值
+					//遍历所有规格值
+					list.each(function(index,item){
+						if($(item).attr("data-sku") == last_sku_id){
+							$(item).addClass("disabled");
+							return false;
+						}
+					});
+				}
+				
+				
+			}
+		}
+		
+		//设置当前规格下的价格，库存量，图标
+		function changeSku(){
+			//默认图标
+			var default_icon = "{$product.main_img}";
+			//当前SKU_ID
+			var sku_id = $("#hebidu_skuchecked").val();
+			if(window.hasChoosed){
+				
+				console.log("改变当前规格属性");
+				console.log(sku_id,"sku_id值");
+				//必须在所有规格都有选择下才遍历处理
+				//对库存为0 的设置disabled
+				var current_sku = window.sku_list[sku_id];
+//				console.log(current_sku);
+				console.log(current_sku,"current_sku值");
+				if(current_sku){	
+					if(current_sku.icon_url){
+						$(".sku-info .js_sku_icon_url").attr("src",current_sku.icon_url);
+					}else{
+						$(".sku-info .js_sku_icon_url").attr("src",default_icon);
+					}
+					$(".sku-info .js_sku_price").text(current_sku.price/100.0);
+					$("#price").val(current_sku.price/100.0);
+					$(".sku-info .js_sku_quantity").text(current_sku.quantity);
+				}
+			}
+			
+			
+		}
+		
+		function showSku(which){
+			var top2 = $(window).height();
+			var top3 = top2 - $(".sku-panel").height();
+//			console.log(top3,top2);
+			$(".sku-panel-mask").css({opacity:1.0,left:0}).removeClass("js_hide");			
+			$(".sku-panel").css({top:top2}).animate({top:top3.toString()+'px'},1000);
+//			console.log(which,"点击什么触发，显示SKU");
+			if(which == 1){
+				$(".sku-panel-mask .js_add_to_cart").removeClass("onlyone").hide();
+				$(".sku-panel-mask .buy").text("确定").parent().addClass("onlyone");
+			}else if(which == 0){
+				$(".sku-panel-mask .js_buy").removeClass("onlyone").hide();
+				$(".sku-panel-mask .add-cart").text("确定").parent().addClass("onlyone");
+			}else{
+				$(".sku-panel-mask .js_add_to_cart").removeClass("onlyone").show();
+				$(".sku-panel-mask .js_buy").removeClass("onlyone").show();
+				$(".sku-panel-mask .add-cart").text("放入购物车");
+				$(".sku-panel-mask .buy").text("立即购买");
+			}
+//			$(".sku-panel-mask").show().slideUp(800);
+		}
+		
+		function hideSku(){
+			var top2 = $(window).height()+$("body").scrollTop();
+			$(".sku-panel-mask").css({opacity:0,left:'100%'}).addClass("js_hide");
+		}
+		</eq>
+		$(function(){
+			
+			<eq name="product['has_sku']" value="1">
+		
+			$(".js_sku").on("tap",function(){
+				showSku();
+			});
+			$(".js_sku").click(function(){
+				showSku();
+			});
+			$(".sku-panel .close").on("tap",function(){
+				hideSku();
+			});
+			$(".sku-panel .close").click(function(){
+				hideSku();
+			});
+			window.sku_list = JSON.parse('{$sku_list}');
+			
+			
+			
+			$(".sku-value-list").on("tap",function(ev){
+//				console.log("tap");
+				var $ele = $(ev.target);
+				if($ele.hasClass("value-item") && !$ele.hasClass("disabled")){
+					$ele.siblings().removeClass("checked");
+					$ele.toggleClass("checked");			
+					setCheckedSku();
+				}
+//				console.log(window.hasChoosed);
+				if(window.hasChoosed){
+					$("#hebidu_skuchecked").attr("data-checked","true");
+				}else{
+					$("#hebidu_skuchecked").attr("data-checked","false");
+				}
+//				console.log($("#hebidu_skuchecked"));
+			});
+			
+			$(".sku-value-list").on("click",function(ev){
+//				console.log("click");
+				var $ele = $(ev.target);
+				if($ele.hasClass("value-item") && !$ele.hasClass("disabled")){
+					$ele.siblings().removeClass("checked");
+					$ele.toggleClass("checked");				
+					setCheckedSku();		
+				}
+//				console.log(window.hasChoosed);
+				if(window.hasChoosed){
+					$("#hebidu_skuchecked").attr("data-checked","true");
+				}else{
+					$("#hebidu_skuchecked").attr("data-checked","false");
+				}
+//				console.log($("#hebidu_skuchecked"));
+//				console.log($("#hebidu_skuchecked").attr("data-checked"));
+			});
+			</eq>
+			
+			//绑定数量加减
+//			$(".sku-count .js_minus").on("tap",function(){
+//				var curCnt = parseInt($(".sku-count input[name='sku_count']").val());
+//				if(curCnt - 1 >= 1){
+//					$(".sku-count input[name='sku_count']").val(curCnt - 1);
+//					$(".sku-count label").text(curCnt - 1);
+//					$("#count").val(curCnt - 1);
+//				}
+//				if(curCnt - 1 == 1){
+//					$(".sku-count input[name='sku_count']").addClass("am-diabled");
+//				}
+//			});
+//			$(".sku-count .js_plus").on("tap",function(){
+//				var curCnt = parseInt($(".sku-count input[name='sku_count']").val());
+//				$(".sku-count input[name='sku_count']").val(curCnt + 1);
+//					$(".sku-count label").text(curCnt + 1);
+//					$("#count").val(curCnt + 1);
+//				$(".sku-count input[name='sku_count']").removeClass("am-diabled");
+//				
+//			});
+			$(".sku-count .js_minus").click(function(){
+				var curCnt = parseInt($(".sku-count input[name='sku_count']").val());
+				if(curCnt - 1 >= 1){
+					$(".sku-count input[name='sku_count']").val(curCnt - 1);
+					$(".sku-count span.sku_count").text(curCnt - 1);
+				}
+			});
+			$(".sku-count .js_plus").click(function(){
+				var curCnt = parseInt($(".sku-count input[name='sku_count']").val());				
+				$(".sku-count input[name='sku_count']").val(curCnt + 1);
+				$(".sku-count input[name='sku_count']").removeClass("am-diabled");
+					$(".sku-count span.sku_count").text(curCnt + 1);
+			});
+			
+			
+			$("img.lazy").lazyload({effect : 'fadeIn'});
+			
+			
+			//评论加载
+			loadComment();
+		});
+		
+		function loadComment(){
+			window.loadcomment = {p:1,template:""};
+			
+			var source  = $("#commenttemplate").html();
+			window.loadcomment.template = Handlebars.compile(source);
+			//
+			$('#detail-tabs').find('a').on('opened.tabs.amui', function(e) {
+				
+				var item = $(this).attr("data-item");
+				if(item == "evaluation"){
+					queryComments();
+				}else{
+					
+				}
+				
+				console.log('[%s] 选项卡打开了' , item );
+				
+			});
+			
+			window.loadcomment.prevScrollY = 0;
+			window.loadcomment.directionY = 1;
+			$(window).on("scroll",function(ev){
+				
+				if(window.loadcomment.prevScrollY - $(window).scrollTop() > 0){
+					window.loadcomment.directionY = -1;
+				}else{
+					window.loadcomment.directionY = 1;
+				}
+				
+				window.loadcomment.prevScrollY = $(window).scrollTop();
+				
+				if(window.loadcomment.directionY == 1 && $(document).height() - $(window).height() - $(window).scrollTop() < 20){
+//					var $ele = loadingMsg();
+					queryComments();
+				}
+			});
+			
+		}
+		var pl=0;
+		function queryComments(productid){
+			if(window.loadcomment.ajaxing){
+				console.log("cache");
+				return false;
+			}
+			
+			var productid = "{$product.id}";
+			$.ajax({
+				url:"{:U('Shop/OrderComment/index')}",
+				type:"post",
+				data:{p:window.loadcomment.p,productid:productid},
+				beforeSend:function(){
+					$(".loading").show();
+					window.loadcomment.p++;
+					window.loadcomment.ajaxing = true;
+				}
+			}).always(function(){
+				$(".loading").hide();
+				window.loadcomment.ajaxing = false;
+			}).done(function(data){	
+				//alert();
+				
+				var panel = $(".comments");
+				
+				if(data.info==null){
+					if(pl==0){
+						panel.html(panel.html()+'<br /><center style="color:#999">没有更多评论</center>');
+					}
+					pl=1;
+				}
+				console.log(data);
+				if(data.status){
+					var html = window.loadcomment.template({data:data.info});
+					panel.html(panel.html()+html);
+					console.log(html);
+				}else{
+					alertMsg(data.info);
+				}
+			});
+		}
+		 
+		/**
+		 * 减数量
+		 */
+		function subtract(){
+			var $sku_count=$("input[name='sku_count']");
+			if($sku_count.val()==1){
+				return;
+			}
+			$sku_count.val($sku_count.val()-1);
+		}
+		
+		/**
+		 *加数量 
+		 */
+		function add(){
+			var $sku_count=$("input[name='sku_count']");
+			if($sku_count.val()==$("#quantity").val()){
+				return;
+			}
+			$sku_count.val(parseInt($sku_count.val())+1);
+		}
+		
+		/**
+		 * 检查是否为整数 ,是否合理
+		 */
+		function checkNum(){
+			var $sku_count=$("input[name='sku_count']");
+			$reg=/^\+?[1-9][0-9]*$/;
+			if(!$reg.test($sku_count.val())){
+				$sku_count.val(1);
+			}
+			if($sku_count.val()>$("#quantity").val()){
+				$sku_count.val($("#quantity").val());
+			}
+		}
+		
+	</script>
+	
+</block>
+

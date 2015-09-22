@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="utf-8">
+		<title>{$meta_title|default='杭州博也网络科技'}</title>
+		<meta name="keywords" content="{$seo.keywords|default=" "}" />
+		<meta name="description" content="{$seo.description|default=" "}" />
+		<meta name="author" content="{$cfg.owner|default=" Gooraye "}" />
+	    <meta content="yes" name="apple-mobile-web-app-capable" />
+	    <meta content="yes" name="apple-touch-fullscreen" />
+	    <meta content="telephone=no,email=no" name="format-detection" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+		
+		<!-- 系统基本样式 -->
+		<link type="text/css" rel="stylesheet" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css" />
+		
+		<link type="text/css" rel="stylesheet" href="__CSS__/shop.css?v=__APP_VERSION__" />
+		
+		<!-- 脚本 -->
+		<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="__CDN__/amazeui/2.3.0/js/amazeui.min.js"></script>
+		<script type="text/javascript" src="__CDN__/common/mobile.js?v=__APP_VERSION__"></script>
+
+		<block name="area_header">
+			<!--顶部区域 -->
+		</block>
+
+	</head>
+	
+	<body class="theme-default theme-shop">
+
+		<block name="area_body">
+			<!--内容区域 -->
+		</block>
+		<block name="area_footer">
+			<!--底部区域 -->
+		</block>
+
+		<!--<footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">-->
+			<!--<div class="am-footer-switch">-->
+			<!--</div>-->
+			<!--<div class="am-footer-miscs ">-->
+				<!--<p>由-->
+					<!--<a href="http://www.itboye.com" title="杭州博也网络科技" target="_blank" class="">杭州博也网络科技</a>提供技术支持</p>-->
+				<!--<p>&copy;2013-{:date('Y')} Version {:C('APP_VERSION')} {:C('WEBSITE_OWNER')}</p>-->
+				<!--<p>{:C('WEBSITE_ICP')}</p>-->
+				<!--<p>{__RUNTIME__}</p>-->
+			<!--</div>-->
+		<!--</footer>-->
+		
+		<div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+		  <a href="#top" title="回到顶部">
+		    <span class="am-gotop-title">顶部</span>
+		    <i class="am-gotop-icon am-icon-chevron-up"></i>
+		  </a>
+		</div>
+		
+		<script type="text/html" src="{:U('Tool/Task/index')}"></script>
+	</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="ISUX">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<title>我的订单中心</title>
+		<link rel="stylesheet" type="text/css" href="__CDN__/amazeui/2.2.1/css/amazeui.min.css">
+
+		<link rel="stylesheet" type="text/css" href="__CSS__/shop.css?v=__APP_VERSION__">
+	</head>
+
+	<body>
+		<div class="wrapper order-page">
+			<div class="header am-cf">
+				<div class="am-fl">订单详情</div>
+				<div class="am-fr"><a href="{:U('Shop/Index/myQrcode')}">获取推广二维码>>></a>
+				</div>
+			</div>
+			<hr/>
+
+			<div class="order-list">
+				<div class="loading am-text-center"><i class="am-icon-spinner am-icon-spin am-icon-lg"></i>
+				</div>
+				<ul id="container" class="am-list">
+					
+				</ul>
+				<div class=""><a class="am-btn am-btn-block more" href="javascript:query();">加载更多</a></div>
+			</div>
+			<assign name="active" value="2" />
+			<include file="partial/footermenu" />
+		</div>
+		<script src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+		<script src="__CDN__/amazeui/2.2.1/js/amazeui.min.js"></script>
+		<!--<script src="__CDN__/amazeui-masonry/3.2.2/masonry.pkgd.min.js"></script>-->
+		<script>
+		
+			window.dt = new Date();
+			window.page  = 1;
+//			var isFirst = true;
+			
+			function query(){
+		       		var data = {p:window.page++};
+					$.post("{:U('Shop/Orders/orderList')}",data).done(function(data){
+						console.log(data);
+						if(data.status){
+							
+							var cont = $("#container");
+							var list = data.info;
+							if(list == null){
+								$(".more").text("没有了！").hide(2000);
+								return ;
+							}
+							for(var i=0;i<list.length;i++){
+								var item = createItem(list[i]);
+								cont.append(item);
+							}
+							
+						}else{							
+							$(".loading").html("<a href='javascript:query();'>"+data.info+"，点击重新获取！</a>");
+						}
+					}).fail(function(){
+						$(".loading").html("<a href='javascript:query();'>获取订单失败，点击重新获取！</a>");
+					}).always(function(){
+						$(".loading").addClass("am-hide");
+					});
+		    	}
+			function getPayStatus(paystatus,id){
+				var cssClass = "am-bg-success";
+				
+				if(paystatus == "待支付"){
+					return "<div >支付状态：<span class='am-bg-warning' >"+paystatus+"</span><a  href='{:C('SITE_URL')}/index.php/Shop/Orders/pay/id/"+id+".shtml?showwxpaytitle=1' >前往支付>></a></div>"
+				}
+				
+				return "<div  >支付状态：<span class='"+cssClass+"'>"+paystatus+"</span>	</div>"
+			}
+			
+			function getOrderStatus(orderstatus,id){
+				if(orderstatus == "已完成"){
+					return "<span class='am-bg-success'>"+orderstatus+"</span>";
+				}
+				
+				if(orderstatus == "已退货"){
+					return "<span class='am-bg-success'>"+orderstatus+"</span>";
+				}
+				//已收货
+				var url = "{:U('Shop/Orders/receive')}?id="+id;
+				if(orderstatus == "已发货"){
+					return "<span class='am-bg-info'>"+orderstatus+"</span><a href='"+url+"' class='ajax-post confirm am-bg-warning'>确认收货>></a>";
+				}
+				
+				return "<span class='am-bg-info'>"+orderstatus+"</span>";
+				
+			}
+			function createItem(obj){
+  				$item = $("<li class='am-u-sm-10 am-center item'></li>");
+  				var html = "<div class='am-bg-danger'>订单编号："+obj.orderid+"</div>";
+  				html = html+ "<div>订单金额："+obj.price+"元</div>";
+  				html = html+ "<div>订单时间："+obj.createtime+"</div>";
+  				html = html+ getPayStatus(obj.pay_status,obj.id);
+  				html = html+ "<div>订单状态："+getOrderStatus(obj.order_status,obj.id)+"</div>";
+  				
+  				if(obj.expressname){
+    					html = html+ "<div>快递公司："+obj.expressname+"</div>";
+    					html = html+ "<div>快递单号："+obj.expressno+"</div>";
+  				}
+  				$item.html(html);
+  				return $item;
+			}
+	       $(function(){
+//	       	createItem();
+	       	query();
+//	       		setTimeout(query,100);
+	        });
+		</script>
+		<script type="text/css" src="{:U('Tool/Task/process')}"></script>
+		{__NORUNTIME__}
+	</body>
+
+</html>

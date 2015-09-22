@@ -1,0 +1,332 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	
+	<style type="text/css">
+		html{
+			font-size: 10px;
+		}
+		/**
+		 * 顶部样式
+		 */
+		.header{
+			background: #FFFFFF;
+		}
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		.am-with-topbar-fixed-top {
+		  	padding-top:  39px;
+		}
+		
+		.myorder .am-tabs-nav{
+			width:100%;
+		}
+		.myorder .am-nav-tabs>li{
+			width:20%;
+		}
+		.myorder .am-nav-tabs>li>a{
+			font-size: 1.2rem;
+			margin: 0px;
+		}
+		.myorder .am-nav-tabs>li.am-active>a{
+			border: 0px;
+			color: #F72E5C;
+			background-color: #FAF2F2;
+			border-bottom: 1px solid #F72E5C;
+			cursor: default;
+		}
+		.myorder .empty{
+			padding: 20px 0px;
+		}
+		.myorder .empty i{
+			font-size: 32px;
+		}
+		
+		.item-p-list{
+			
+		}
+		
+		.item-p-list .item-p{
+			position: relative;
+			font-size: 0.8rem;
+			border-bottom: 1px solid #E2E2E1;
+			height: 60px;
+		}
+		.item-p img{
+			width: 36px;
+			height: 48px;
+			position: absolute;
+		}
+		.item-p .pc-wrp{
+			position: absolute;
+			right: 0px;
+			top:0px;
+			line-height: 1.0;
+			
+		}
+		.item-p .p-name{
+			height: 2rem;
+			line-height: 1;
+  			width: 100%;
+  			padding-left: 50px;
+  			padding-right: 70px;
+			
+		}
+		.item-p .p-desc{
+			height: 1rem;
+			line-height: 1;
+  			width: 100%;
+  			padding-left: 50px;
+  			padding-right: 70px;
+		}
+		.myorder .order-item{
+			background: #FFFFFF;
+			padding: 10px;
+			margin: 10px 0px;
+		}
+		.order-item a{
+			color: #414649;
+		}
+		.am-tabs-bd .am-tab-panel{
+			padding: 0px;
+		}
+		
+		.am-icon-weixin{
+			color: #DA955C;
+		}
+		.store-info-wrp{
+			border-bottom: 1px solid #E2E2E1;
+			margin-bottom: 10px;
+		}
+		.order .order-desc{
+			background: #665B5B;
+			color: #fff;
+		}
+		.order .order-desc .am-icon-list-alt{
+			font-size: 24px;
+			float: left;
+			width: 32px;
+			color: #FFFFFF;
+			
+		}
+		.order .express-wrp .am-icon-map-marker{
+			font-size: 36px;
+			float: left;
+			width: 32px;
+			color: #736A7C;
+		}
+		.evaluation .text{
+		}
+		.J_rate_plugin{
+			height: 20px;
+			padding: 4px 0 0 118px;
+		}
+		.J_rate_plugin .oc-star-n{
+		  	margin-top: -2px;
+		  	background: url(__IMG__/star.png) no-repeat;
+		  	text-align: left;
+		  	width: 130px;
+		}
+		.J_rate_plugin .oc-star-n .star5 {
+			background-position: 0 -30px;
+		}
+		.J_rate_plugin .oc-star-n ul {
+			background: url(__IMG__/star.png) no-repeat;
+			height: 20px;
+			padding-left: 0px;
+		}
+		.J_rate_plugin .oc-star-n li {
+  			display: inline-block;
+  			width: 20px;
+  			height: 20px;
+  			text-indent: -999px;
+  			overflow: hidden;
+  			padding: 0;
+  			margin-bottom: 0;
+		}
+		.J_rate_plugin .oc-star-n .star1 {
+			background-position: -104px -60px;
+		}
+		.J_rate_plugin .oc-star-n .star2 {
+			background-position: -78px -60px;
+		}
+		.J_rate_plugin .oc-star-n .star3 {
+			background-position: -52px -30px;
+		}
+		.J_rate_plugin .oc-star-n .star4 {
+			background-position: -26px -30px;
+		}
+		.J_rate_plugin .oc-star-n .star5 {
+			background-position: 0 -30px;
+		}
+
+		.theme-shop .am-gotop-fixed {
+			bottom: 3rem;
+			left: 0.2rem;
+			width: 3rem;
+		}
+		.theme-shop .am-gotop-fixed .am-gotop-icon {
+			width: 100%;
+			height:3rem;
+			line-height: 1.6rem;
+			background-color: #FF4400;
+			vertical-align: middle;
+			color: #FAFAFA;
+			border-radius: 50%;
+		}
+
+		a.am-btn:link{color: white;}
+		a.am-btn:hover{color: white;}
+		a.am-btn:active{color: white;}
+		a.am-btn:visited{color: white;}
+	</style>
+
+	
+</block>
+
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="{:U('Shop/User/order')}"><i class="am-icon-chevron-left am-margin-right-xs"></i>发表评价</a> <a href="{:U('Shop/Index/index')}"><i class="am-icon-home am-icon-sm am-fr"></i></a></div>
+	</div>
+	
+	<div class="evaluation am-padding-sm">
+		
+		
+	 	<form class="evaluationForm am-form am-cf am-form-horizontal">
+	 		
+	 		<volist name="items" id="vo">
+	 			
+		 		<div class="am-form-group">
+		 			<div class="am-cf am-margin-bottom-sm">
+		 				<img  src="{$vo.img}" class="am-fl am-margin-right-sm" alt='' style="width:68px;height:96px" />
+		 				<div class="p-name">
+		 					{$vo.name}
+		 				</div>
+		 				<div class="p-price">
+		 					¥{:number_format($vo['price']/100.0,2)}
+		 				</div>
+		 			</div>
+		 			
+		 			<label for="doc-ipt-pwd-1" class="am-fl">评价分数：</label>
+	      			<div class="J_rate_plugin">      				
+						
+						<div class="oc-star-n"> 
+							<ul class="star5">  
+								<li val="1"> star1 </li>  
+								<li val="2"> star2 </li>  
+								<li val="3"> star3 </li>
+								<li val="4"> star4 </li>  
+								<li val="5"> star5 </li>  
+							</ul> 
+						</div>
+						<input type="hidden" name="pid[]" class="pid"  value="{$vo.p_id}">
+						<input type="hidden" name="score[]" class="score"  value="5">
+	      			</div>
+		 			
+		 			<br  />
+		 			
+	      			<label for="doc-ipt-pwd-1" class="am-fl">物流服务：</label>
+	      			<div class="J_rate_plugin">      				
+						
+						<div class="oc-star-n"> 
+							<ul class="star5">  
+								<li val="1"> star1 </li>  
+								<li val="2"> star2 </li>  
+								<li val="3"> star3 </li>
+								<li val="4"> star4 </li>  
+								<li val="5"> star5 </li>  
+							</ul> 
+						</div>
+						
+						<input type="hidden" name="logistics_service[]" class="score"  value="5">
+	      			</div>
+	      			<br />
+	      			<label for="doc-ipt-pwd-1" class="am-fl">发货速度：</label>
+	      			<div class="J_rate_plugin">      				
+						
+						<div class="oc-star-n"> 
+							<ul class="star5">  
+								<li val="1"> star1 </li>  
+								<li val="2"> star2 </li>  
+								<li val="3"> star3 </li>
+								<li val="4"> star4 </li>  
+								<li val="5"> star5 </li>  
+							</ul> 
+						</div>
+						<input type="hidden" name="delivery_speed[]" class="score"  value="5">
+	      			</div>
+	      			<br />
+	      			<label for="doc-ipt-pwd-1" class="am-fl">服务态度：</label>
+	      			<div class="J_rate_plugin">      				
+						
+						<div class="oc-star-n"> 
+							<ul class="star5">  
+								<li val="1"> star1 </li>  
+								<li val="2"> star2 </li>  
+								<li val="3"> star3 </li>
+								<li val="4"> star4 </li>  
+								<li val="5"> star5 </li>  
+							</ul> 
+						</div>
+						<input type="hidden" name="service_attitude[]" class="score"  value="5">
+	      			</div>
+	      			
+	      			
+	      			
+			 		<div class="am-form-group">
+			 			<textarea class="text am-form-control"  name="text[]" rows="5"></textarea>	 			
+			 		</div>
+		 		</div>
+	 		
+	 		</volist>
+	 		
+	 		
+	 		
+	 	</form>
+	 	
+	  	<div class="btn-controls">
+	  		<a target-form="evaluationForm" onclick="return check();" href="__SELF__" class="am-btn am-btn-sm am-btn-danger ajax-post am-btn-block">发表评价</a>         
+	  	</div>
+		
+	</div>
+	
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+		function check(){
+			
+			$(".score").each(function(index,item){
+				if($(item).val() == "0"){
+					alertMsg("订单必须评价!");
+					return false;
+				}
+			})
+			
+			return true;
+		}
+		
+		$(function(){
+			$(".J_rate_plugin li").on("click",function(ev){
+				
+				var score = $(ev.target).attr("val");
+				
+				var ele = $(ev.target).parents(".J_rate_plugin");
+				ele.find(".score").val(score);
+				
+				ele.find("ul").removeClass().addClass("star"+score);
+			});
+		})
+		
+		
+	</script>
+	
+</block>

@@ -1,0 +1,255 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<script type="text/javascript" src="__CDN__/amazeui-masonry/3.2.2/masonry.pkgd.min.js"></script>
+	<style type="text/css">
+		html{
+			font-size: 12px;
+		}
+		
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+		
+		.item-wrp .item{
+			width:40%;
+			margin: 0 5%;
+		}
+		.header{
+			font-size: 12px;
+		}
+		.header select{
+			width: 64px;
+			font-size: 12px;
+			position: absolute;
+			left: 5px;
+			top: 8px;
+			height: 30px;
+			padding: 4px;
+			border-right: 0px;
+		}
+		
+		.header .search-wrp{
+  			padding: 8px 56px 8px 74px;
+		}
+		.header .search-wrp input{
+			padding: 5px;
+			font-size: 14px;
+			height: 30px;
+		}
+		.header i.am-icon-home{
+			position: absolute;
+		  	width: 48px;
+		  	color: #666666;
+		  	right: 10px;
+		  	font-size: 28px;
+		  	top: 0px;
+		 	color: #fff;
+		  	text-align: center;
+		  	line-height: 1.6;
+			
+		}
+		.am-topbar{
+			background: #73142A;
+			margin-bottom: 0px;
+		}
+		/*.filter{
+			text-align: center;
+		}
+		.filter a{
+			padding:10px;
+			color: #000000;
+			font-size: 14px;
+			width:25%;
+			box-sizing: border-box;
+			display: inline-block;
+			float: left;
+		}
+		.filter i.am-icon-caret-down{
+			font-size: 12px;
+			font-size: 10px;
+		}
+		.filter a.active{
+			color: #EA5019;
+			font-weight: bold;
+		}*/
+  		.search-wrp .am-icon-search{
+  			position: absolute;
+  			color: #f40;
+			font-size: 1.6rem;
+			top: 5px;
+			right: 60px;
+			width: 2rem;
+			text-align: center;
+			cursor: pointer;
+  		}
+	</style>
+</block>
+
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default">
+				<form class="am-form" action="__SELF__" method="post" >
+					<input type="hidden" name="cate_id" value="{$cate_id}" />
+				<select name="type" id="wxstore_type">
+					<option value="" >全部</option>
+					<volist name="cates" id="vo">
+						<option value="{$vo.id}" <eq name="vo.id" value="$cate_id">selected="selected"</eq> >{$vo.name}</option>
+					</volist>
+				</select>
+				<div class="search-wrp">
+					<input type="text" class="am-form-control" value="{$q}" name="q" placeholder="搜索关键词" />
+					<i class="am-icon-search am-inline-block"></i>
+				</div>
+				<a href="{:U('Shop/Index/index')}"><i class="am-icon-home"></i></a>
+			</form>
+		</div>
+	</div>
+	<!--<div class="filter am-cf">
+		<a class="am-fl <eq name="sort" value="s">active</eq>" href="{:U('Shop/Product/search',array('sort'=>'s','layout'=>$layout))}">综合</a>
+		<a class="am-fl <eq name="sort" value="d">active</eq>" href="{:U('Shop/Product/search',array('sort'=>'d','layout'=>$layout))}">销量</a>
+		<if condition=" $sort eq 'pd' or $sort eq 's' or $sort eq 'd'">
+		<a class="am-fl" href="{:U('Shop/Product/search',array('sort'=>'p','layout'=>$layout))}">价格<i class="am-icon-arrow-down am-text-xs"></i></a>
+		</if>
+		<eq name="sort" value="p">	
+		<a class="am-fl" href="{:U('Shop/Product/search',array('sort'=>'pd','layout'=>$layout))}">价格<i class="am-icon-arrow-up am-text-xs"></i></a>
+		</eq>
+		<eq name="layout" value="list">
+		<a href="{:U('Shop/Product/search',array('sort'=>$sort,'layout'=>'grid'))}" class="am-fl "><i class="am-icon-th-list"></i></a>
+		<else/>
+		<a href="{:U('Shop/Product/search',array('sort'=>$sort,'layout'=>'list'))}" class="am-fl "><i class="am-icon-th-large"></i></a>
+		</eq>
+	</div>-->
+	<ul class="items-wrp am-cf am-list am-padding-sm" data-am-scrollspy="{animation:'fade'}"	data-am-scrollspy="{animation:'fade', delay: 300}">
+		
+		
+		
+	</ul>
+	
+	
+</block>
+
+<block name="area_footer">
+	<script id="wxstoretemplate" type="text/x-handlebars-template">
+		{{#each data}}
+			<li class="am-margin-top-sm am-margin-bottom-sm am-padding-left-sm am-padding-right-sm">
+				<a href="{:U('Shop/Wxstore/view')}?id={{id}}">
+				<div>
+					{{name}}
+					<img src="{{logo}}" style="width: 48px;" alt="logo" />
+				</div>
+				<img class="am-responsive-width"  src="{{banner}}" alt="{{name}}" />
+				
+				</a>
+			</li>
+	  	{{/each}}
+	</script>
+	
+	<script type="text/javascript" src="__CDN__/handlebar/3.0.3/handlebars.js?v=1.0"></script>
+	
+	<script type="text/javascript">
+		
+		/**
+		 * 	banner: "http://2test.8raw.com/Uploads/WxshopPicture/2015-04-22/55372ed756fc1.jpg"
+			cate_id: "9"
+			createtime: "1430711724"
+			desc: ""
+			exp: "0"
+			id: "4"
+			logo: "http://2test.8raw.com/Uploads/WxshopPicture/2015-04-26/553c9763ca6ff.jpeg"
+			name: "111"
+			notes: "11111"
+			service_phone: "11111111"
+			uid: "34"
+			updatetime: "1430711724"
+			weixin_number: ""
+			wxno: "11111111"
+		 */
+		
+		function appendList(){		
+			if(window.ajaxing ){
+				console.log("cache");
+				return ;	
+			}
+			var q = $(".header input[name='q']").val();
+			var cate_id = $(".header select[name='type']").val();
+			window.ajaxing = false;
+			if(q != window.boye.search.q || cate_id != window.boye.search.cate_id){
+				window.boye.p = 1;
+			}
+			
+			$.ajax({
+				type:'post',
+				url:"{:U('Shop/Wxstore/search')}",
+				data:{q:q,p:window.boye.p,cate_id:cate_id},
+				dataType:"json",
+				beforeSend:function(){
+					window.ajaxing = true;
+				}
+			}).always(function(){
+				window.ajaxing = false;
+			}).done(function(data){
+				
+				if(data.status){
+					console.log(data.info);
+					if(data.info){
+						window.boye.p++;
+						var html = window.boye.template({data:data.info});
+						
+						if(q != window.boye.search.q || cate_id != window.boye.search.cate_id){
+							window.boye.search.q = q;
+							window.boye.search.cate_id = cate_id;
+							$(".items-wrp").html(html);
+						}else{
+						
+							$(".items-wrp").html($(".items-wrp").html()+html);
+						}
+					}else{
+						//TODO: 没有数据了
+					}
+					
+				}else{
+					alertMsg(data.info);
+				}
+			});
+		}
+		
+		
+		$(function(){
+			window.boye = { p : 0 ,template:''};
+			
+			window.boye.search = {cate_id:'',q:''};
+			var source  = $("#wxstoretemplate").html();
+			window.boye.template = Handlebars.compile(source);
+			
+			$(window).on("scroll",function(ev){
+				if($(document).height() - $(window).height() - $(window).scrollTop() < 50){
+					appendList();
+				}
+			});
+			
+			appendList();
+			
+			window.boye.p = 1;
+			
+			$(".search-wrp .am-icon-search").on("tap",function(){
+				appendList();
+			});
+			
+			
+			$("#wxstore_type").change(function(){
+				appendList();
+			})
+		})
+		
+	</script>
+</block>
+

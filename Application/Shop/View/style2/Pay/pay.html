@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="utf-8">
+		<title>微信安全支付</title>
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="yes" name="apple-touch-fullscreen" />
+		<meta content="telephone=no,email=no" name="format-detection" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<!-- 系统基本样式 -->
+		<link type="text/css" rel="stylesheet" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css" />
+		
+
+		<style type="text/css">
+			html{
+				font-size: 10px;
+			}
+			.header{
+				background: #FFFFFF;
+				margin-bottom: 15px;
+			}
+			.header{
+				font-size: 16px;
+				height:50px;
+			}
+			
+			.header .am-topbar{
+				font-size: 1rem;
+	  			padding: 5px 16px;
+	  			min-height: 20px;
+	  			margin-bottom: 0px;
+			}
+	  		
+	
+	  		.am-form label{
+	  			font-size: 14px;
+	  		}
+
+			.div_payType{border:1px solid #ccc;padding:1rem;margin-top:10px;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class="header">
+			<div class="am-topbar am-topbar-default am-topbar-fixed-top">
+				<a href="{:U('Shop/User/order')}"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;选择支付方式</a>
+			</div>
+		</div>
+		
+		<div class="am-padding-sm">
+				<div class="am-text-center" >
+				订单总价:<span class="am-text-danger">¥
+					<span class="js_total_price" >{:number_format($total_fee/100.0,2)}元&nbsp;
+
+						<if condition="$total_express gt 0"><br /><span style="color: black;font-size: 12px">含运费：{:number_format($total_express/100,2)}元</span></if></span></span>
+				</div>
+				<form id="form_payType" class="am-text-left am-form">
+				    <div class="div_payType" >
+						<img src="__IMG__/weixin.jpg" style="width:3rem;" />
+				        <label for="wxzf" style="margin-left: 5px">微信支付</label>
+						<input type="radio" name="payway" style="margin-left: 60%" value="1" id="wxzf" checked="checked" />
+				    </div>
+				    
+					<div class="div_payType" >
+						<img src="__IMG__/LorryGreen.png" style="width: 3rem;" />
+						<label for="hdfk" style="margin-left: 5px"> 货到付款</label>
+
+						<input type="radio" name="payway" style="margin-left:60%" value="2" id="hdfk" />
+				    </div>
+					
+					<!--<ul class="am-list">
+						<li >货到付款<i class="am-icon-check am-text-warning am-fr"></i></li>
+						<li >微信支付<i class="am-icon-check am-text-warning am-fr"></i></li>
+					</ul>-->
+				</form>
+				<div class="footer-menu am-text-right " style="margin-top:0.2rem">
+					<a href="javascript:void(0)" onclick="choose();"  class="am-btn am-btn-sm  am-block am-btn-success" style="padding: 10px;margin-top: 20px;border-radius: 5px;">确定</a>
+				</div>
+		</div>
+		<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="__CDN__/amazeui/2.3.0/js/amazeui.min.js"></script>
+		<script type="text/javascript" src="__CDN__/common/mobile.js"></script>
+
+
+		
+		<script type="text/javascript">
+
+			$(function(){
+				$(".div_payType").click(function(){
+					//alertMsg($(this).find("input").val());
+					$(this).find("input[name='payway']").prop('checked','checked');
+				})
+			})
+
+
+			function choose(){
+				var ele = document.querySelector("input:checked");
+//				alert(ele.value);
+				if(ele.value == "1"){
+					callpay();
+				}else{
+					//货到付款
+					var url = "{:U('Shop/Pay/cashOndelivery')}";
+					var ids = "{$ids}";
+					$.ajax({
+						url:url,
+						type:'post',
+						//datyType:'json',
+						data:{id:ids},
+					}).done(function(data){
+						if(data.status){
+							alertMsg(data.info);
+							window.location.href = "{:U('Shop/User/order')}";
+						}else{
+							alertMsg(data.info);
+						}
+					}).error(function(XMLHttpRequest, textStatus, errorThrown){
+						// alert(XMLHttpRequest.status);
+                       // alert(XMLHttpRequest.readyState);
+                        alert("发生错误了，请重试");
+					})
+					;
+
+					/*$.ajax({
+						url:url,
+						type:'post',
+						data:{id:ids},
+						success:function(data){
+							console.info(data);
+							//alert(data.info)
+							if(data.status==1){
+								alert(data.info);
+								//window.location.href = "{:U('Shop/User/order')}";
+							}else{
+								alert(data.info);
+							}
+						}
+					});*/
+					
+				}
+			}
+
+
+
+		</script>
+		<script type="text/javascript">
+		//调用微信JS api 支付
+			function jsApiCall() {
+				WeixinJSBridge.invoke(
+					'getBrandWCPayRequest', 
+					{$jsApiParameters},
+					function(res) {
+						if (res.err_msg == "get_brand_wcpay_request:ok") {
+							window.location.href = "{:U('Shop/User/order')}";
+						} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+							alert("您取消了支付，可以在我的订单中继续支付！");
+						} else if (res.err_msg == "get_brand_wcpay_request:fail") {
+							alert(res.err_desc);
+						}
+					}
+				);
+			}
+
+			function callpay() {
+				if (typeof WeixinJSBridge == "undefined") {
+					if (document.addEventListener) {
+						document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+					} else if (document.attachEvent) {
+						document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+						document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+					}
+				} else {
+					jsApiCall();
+				}
+			}
+		</script>
+		{__NORUNTIME__}
+	</body>
+
+</html>

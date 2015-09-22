@@ -1,0 +1,182 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	
+	<style type="text/css">
+		html{
+			font-size: 10px;
+		}
+		/**
+		 * 顶部样式
+		 */
+		.header{
+			background: #FFFFFF;
+		}
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		.am-with-topbar-fixed-top {
+		  	padding-top:  39px;
+		}
+		
+		.myorder .am-tabs-nav{
+			width:100%;
+		}
+		.myorder .am-nav-tabs>li{
+			width:20%;
+		}
+		.myorder .am-nav-tabs>li>a{
+			font-size: 1.2rem;
+			margin: 0px;
+		}
+		.myorder .am-nav-tabs>li.am-active>a{
+			border: 0px;
+			color: #F72E5C;
+			background-color: #FAF2F2;
+			border-bottom: 1px solid #F72E5C;
+			cursor: default;
+		}
+		.myorder .empty{
+			padding: 20px 0px;
+		}
+		.myorder .empty i{
+			font-size: 32px;
+		}
+		
+		.item-p-list{
+			
+		}
+		
+		.item-p-list .item-p{
+			position: relative;
+			font-size: 0.8rem;
+			border-bottom: 1px solid #E2E2E1;
+			height: 60px;
+		}
+		.item-p img{
+			width: 36px;
+			height: 48px;
+			position: absolute;
+		}
+		.item-p .pc-wrp{
+			position: absolute;
+			right: 0px;
+			top:0px;
+			line-height: 1.0;
+			
+		}
+		.item-p .p-name{
+			height: 2rem;
+			line-height: 1;
+  			width: 100%;
+  			padding-left: 50px;
+  			padding-right: 70px;
+			
+		}
+		.item-p .p-desc{
+			height: 1rem;
+			line-height: 1;
+  			width: 100%;
+  			padding-left: 50px;
+  			padding-right: 70px;
+		}
+		.myorder .order-item{
+			background: #FFFFFF;
+			padding: 10px;
+			margin: 10px 0px;
+		}
+		.order-item a{
+			color: #414649;
+		}
+		.am-tabs-bd .am-tab-panel{
+			padding: 0px;
+		}
+		
+		.am-icon-weixin{
+			color: #DA955C;
+		}
+		.store-info-wrp{
+			border-bottom: 1px solid #E2E2E1;
+			margin-bottom: 10px;
+		}
+		.order .order-desc{
+			background: #665B5B;
+			color: #fff;
+		}
+		.order .order-desc .am-icon-list-alt{
+			font-size: 24px;
+			float: left;
+			width: 32px;
+			color: #FFFFFF;
+			
+		}
+		.order .express-wrp .am-icon-map-marker{
+			font-size: 36px;
+			float: left;
+			width: 32px;
+			color: #736A7C;
+		}
+	</style>
+
+	
+</block>
+
+<block name="area_body">
+	
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="{:U('Shop/User/order')}"><i class="am-icon-chevron-left am-margin-right-xs"></i>订单详情</a> <a href="{:U('Shop/Index/index')}"><i class="am-icon-home am-icon-sm am-fr"></i></a></div>
+	</div>
+	<div class="myorderinfo">
+	  <div class="order">	  	
+		<div class="order-desc am-padding-sm">
+			<i class="am-icon-list-alt"></i>
+			<div>{:getTaobaoOrderStatus($order['order_status'])} <eq name="order['order_status']" value="$backStatus">[{$backinfo.reason}]</eq></div>
+			<div>订单金额:¥ {:number_format($order['price']/100.0,2)}</div>
+		</div>
+		<div class="express-wrp am-padding-sm">
+			<i class="am-icon-map-marker"></i>
+			<div>收货人: {$order['contactname']} {$order['mobile']} </div>
+			<div class="am-text-sm">收货地址: {$order['province']}{$order['city']}{$order['area']}{$order['detailinfo']} </div>
+		</div>
+	  	
+	  	<div class="item-p-list am-padding-sm">
+			<volist name="items" id="vo">
+	  		  <div class="item-p am-cf">
+	  		  	<img src="{$vo.img}" class="am-fl" alt="商品图片" />
+	  		  	<div class="p-name am-text-truncate">{$vo.name}</div>
+			  	<div class="p-desc am-text-truncate">{$vo.sku_desc}</div>
+			  	<div class="pc-wrp am-fr">
+		  		  <div class="p-price"><h6>¥{:number_format($vo['price']/100.0,2)}</h6></div>
+		  		  <div class="p-count am-link-muted am-text-xs am-text-right">x{$vo.count}</div>
+		  		</div>
+	  		  </div>
+			</volist>
+	  	</div>
+	  	
+	  	<div class="orderid am-link-muted am-padding-sm">
+	  		<div>订单号: {$order.orderid}</div>
+	  		<div>下单时间: {$order.createtime|date="Y-m-d h:i:s",###}</div>
+	  	</div>
+	  </div>
+		
+	  	<div class="btn-controls">
+                           
+	  	</div>
+		
+	</div>
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+		
+		
+		
+	</script>
+	
+</block>

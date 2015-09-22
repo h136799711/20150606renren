@@ -1,0 +1,21 @@
+
+<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default product-footer"
+id="">
+  <ul class="am-navbar-nav am-cf am-avg-sm-4">
+    <li class="home">
+      <a href="{:U('Shop/Index/index')}" class="home">
+        <span class="am-navbar-label" style="color: #666666;">首页</span>
+      </a>
+    </li>
+    <li class="add-cart">
+      <a href="javascript:wxshop.addToShoppingCart({$p_id})" class="">
+        <span class="am-navbar-label">加入购物车</span>
+      </a>
+    </li>
+    <li class="buy"><!-- data-am-navbar-share -->
+      <a href="{:U('Shop/Product/buy',array('id'=>$p_id))}" class="">
+        <span class="am-navbar-label">立即购买</span>
+      </a>
+    </li>
+  </ul>
+</div>

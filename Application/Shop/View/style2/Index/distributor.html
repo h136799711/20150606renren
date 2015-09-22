@@ -1,0 +1,84 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	 <base href="{:C('SITE_URL')}/" />
+
+    <meta charset="utf-8">
+  <!--  <title>分销中心</title>-->
+   <!-- <meta name="viewport" content="initial-scale=1.0;width=device-width,user-scalable=no" />-->
+
+    <!--<link rel="stylesheet" type="text/css" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css"/>-->
+    <link rel="stylesheet" type="text/css" href="__CSS__/distributor_add.css?v=__APP_VERSION__"/>
+  
+      <script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/jquery.validate.min.js"> </script> 
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/localization/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			jQuery.validator.addMethod("mobile", function (value, element) {
+			    var mobile = /^1[3|4|5|7|8]\d{9}$/;
+				return this.optional(element) || (mobile.test(value));
+			}, "手机格式不对");
+		})
+	
+	/*function toSubmit(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Shop/Index/distributor')}",
+			success:function(data){
+				alert(data);
+			}
+		});
+		
+	}*/
+	</script>
+	
+
+</block>
+
+<block name="area_body">
+
+		<div class="div_logo">
+		
+		</div>
+		<div class="div_main">
+		    <p>欢迎加入<font color="#F0005E">{:C('BRAND_NAME')}</font>,请填写申请信息！</p>
+		
+		    <p>邀请人：<font color="#F0005E">{$referrer.nickname}</font>（请核对）</p>
+		
+		    <form class="validate-form"  >
+		        <p><input type="text" name="name"  class="required  am-form-field am-radius" value="" placeholder="请填写真实姓名,用与佣金结算"/></p>
+					<input name="referrer" value="{$referrer.id}" type="hidden"/>
+		        <p><input type="text" name="phone" class="required mobile am-form-field am-radius" placeholder="请填写手机号码方便联系" value=""/></p>
+		
+		        <p><input type="text" name="address" class="required am-form-field am-radius" placeholder="请填写所在地区" value=""/></p>
+		        <button type="button" url="{:U('Shop/Index/distributor')}" target-form="validate-form"  class="ajax-post am-btn am-btn-primary am-btn-block">申请成为分销商</button>
+		    </form>
+		    
+
+		    
+		    <p style="font-size: 25px; color: #999;margin-top:50px;">分销商特权</p>
+		    <ul>
+		        <li>
+		            <font class="am-icon-home am-icon-lg" color="#F04124"></font>
+		
+		            <div><p class="p_first">独立微店</p>
+		
+		                <p class="p_second">拥有自己的微店及推广二维码</p></div>
+		        </li>
+		        <li>
+		            <font class="am-icon-yen  am-icon-lg" color="#008000" style="margin-left: 35px;"></font>
+		
+		            <div><p class="p_first">销售拿佣金</p>
+		
+		                <p class="p_second">微店卖出商品，您可以获得佣金</p></div>
+		        </li>
+		        <li class="li_last">分销商的商品销售统一由厂家直接收款、直接发货、并提供产品的售后服务，分销佣金由厂家统一设置。</li>
+		    </ul>
+		    {:tag('pageFooter')}
+		</div>
+
+</block>
+
+<block name="area_footer">
+
+</html>

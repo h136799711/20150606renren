@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="utf-8">
+	<title>{$meta_title|default='商城首页'}</title>
+	<meta name="keywords" content="{$seo.keywords|default=" "}" />
+	<meta name="description" content="{$seo.description|default=" "}" />
+	<meta name="author" content="{$cfg.owner|default=" Gooraye "}" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="yes" name="apple-touch-fullscreen" />
+	<meta content="telephone=no,email=no" name="format-detection" />
+	<meta content="maximum-dpr=2" name="flexible" />
+	<meta content="modeName=640-12" name="grid" />
+	<!-- 系统基本样式 -->
+	<link type="text/css" rel="stylesheet" href="__CDN__/amazeui/2.3.0/css/amazeui.min.css" />
+
+	<!-- 商城全局样式 -->
+	<link type="text/css" rel="stylesheet" href="__CSS__/shop.css?v=__APP_VERSION__" />
+	<link type="text/css" rel="stylesheet" href="__CSS__/shop-dpr2.css?v=__APP_VERSION__" />
+
+	<!-- 脚本 -->
+	<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="__CDN__/amazeui/2.3.0/js/amazeui.min.js"></script>
+	<script type="text/javascript" src="__CDN__/common/mobile.js?v=__APP_VERSION__"></script>
+
+
+	<style type="text/css">
+
+		html{
+			font-size: 14px;
+		}
+		body{
+			overflow-x: hidden;
+		}
+		.start-page{
+			width: 100%;
+			height: 1008px;
+			max-height: 1200px;
+			position: absolute;
+			z-index: 100000;
+		}
+
+		.start-page img{
+			height:100%;
+			width: 100%;
+		}
+
+		.product-list{
+			width:100%;
+			box-sizing: border-box;
+			margin: 0.2rem 0;
+			text-align: center;
+		}
+		.product-list .product-wrp{
+			display: inline-block;
+			padding: 10px;
+		}
+
+		.product-list .product-item{
+			padding: 10px;
+			border-radius: 8px;
+			padding-bottom: 2px;
+			height: 100%;
+			box-sizing: border-box;
+			position: relative;
+			background-color: #FFFFFF;
+			overflow: hidden;
+		}
+		.product-list .p-price{
+			box-sizing: border-box;
+			border-top: 1px dashed #ddd;
+			height: .8rem;
+			line-height: .8rem;
+			margin: 0;
+			padding:0;
+			padding-left:10px;
+			text-align:left;
+			color: #ff5000;
+		}
+		.product-list .p-name{
+			font-size: 20px;
+			margin: .35rem .25rem;
+			color: #666;
+			height: 2.4em;
+			overflow: hidden;
+			line-height: 1.2em;
+			position: relative;
+			word-break: break-all;
+		}
+		.product-list .p-main-img img{
+			width:100%;
+			height: 3.5rem;
+		}
+		.product-list .p-price del{
+			color:#9e9e9e;
+			margin-left: 10px;
+			font-size: 20px;
+		}
+		.product-list .zk{
+			position: absolute;
+			top: 0px;
+			left: -0.25rem;
+			background: #ff4400;
+			width: 2.5rem;
+			text-align: center;
+			font-size: 20px;
+			color: #fff;
+			transform: rotateZ(-45deg) translateX(-0.5rem);
+			-webkit-transform: rotateZ(-45deg) translateX(-0.5rem);
+			-moz-transform: rotateZ(-45deg) translateX(-0.5rem);
+
+		}
+
+
+		.ad{
+			margin-top: 0.2rem;
+			border: 1px solid #ccc;
+		}
+		.ad img{
+			width: 100%;
+		}
+		.activity {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			padding: 0;
+			margin: 0.25rem 0;
+			background: #FFFFFF;
+		}
+		.activity img{
+			height: 100%;
+		}
+		.layer.grid{
+			padding: 0px;
+			margin: 0px;
+		}
+		.layer .layer-title{
+			background: #FFFFFF;
+			padding: 0.1rem 0px;
+			border-left: 5px solid #D3B640;
+			padding-left: 8px;
+		}
+		.type-item a{
+			color:#333333;
+		}
+		.domloaded .store_types{
+			/*display:block;*/
+			opacity: 1;
+		}
+		.store_types{
+			/*display:none;*/
+			opacity: 0;
+		}
+		.grid .col-3.grid-2{
+			border: 1px solid #F0F0EE;
+			border-width: 0px 2px 2px 2px;
+			height: 2rem; background: #FFFFFF;
+		}
+		.grid .col-3.grid-3{
+			border: 0px solid #F0F0EE;
+			border-width: 0px 0px 2px 0px;
+			height: 2rem;
+			background: #FFFFFF;
+			margin-left: 0px;
+		}
+		.grid .col-6.grid-4{
+			border: 0px solid #F0F0EE;
+			border: 0px solid #F0F0EE;
+			border-width: 0px 0px 2px 2px;
+			height: 2rem;
+			background: #FFFFFF;
+			height: 2rem;
+			background: #FFFFFF;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$(".start-page").height($(window).height());
+			$(".start-page").css("top",$(window).scrollTop());
+			$(".start-page").delay(2500).fadeOut(4000);
+		});
+	</script>
+	<!-- 商城全局样式 -->
+	<link type="text/css" rel="stylesheet" href="__CDN__/flexible/flexible.css?v=__APP_VERSION__" />
+	<script type="text/javascript" src="__CDN__/flexible/flexible.js?v=__APP_VERSION__"></script>
+	<script type="text/javascript" src="__CDN__/flexible/makegrid.js?v=__APP_VERSION__"></script>
+	<script type="text/javascript" src="__CDN__/amazeui-lazyload/1.9.3/amazeui.lazyload.min.js"  ></script>
+
+	<style type="text/css">
+		.logo-wrp{
+			position: relative;
+			height: 120px;
+			padding: 10px 16px;
+			font-size: 14px;
+			text-shadow: 1px 1px 4px rgba(0,0,0,.6);
+			color: #fff;
+			padding-top: 16px;
+			margin-top: -1.5rem;
+		}
+		.logo-wrp .user-logo{
+			padding: 10px 11px 0;
+			float: left;
+		}
+		.user-logo img{
+			height: 1.5rem;
+			width:1.5rem;
+			border-radius: 50%;
+			-webkit-border-radius: 50%;
+			border: 1px solid #EFDAE5;
+		}
+		.logo-wrp .logo-circle{
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAAC0CAMAAAB43JS2AAAAA3NCSVQICAjb4U/gAAABqlBMVEX///8AAAAAAABaWlpYWFhWVlZVVVUAAACjo6OhoaGIiIiDg4MxEw0tEQwrEQwsEQy3t7e1tbWenp5KHhRJHRTGxsbCwsJyLiByLh9yLSBxLB9gJhrR0dHPz8/MzMyTOSd/MyTZ2dmLOCiHNyeJNiaJNSXl5eXh4eHf39/Z2dmcQCybPyyhPiuZPCrr6+vp6enw8PCoRC+oRDCnQi6mQi3z8/OySDKxRjGwRTCwRjD6+vr29va5SDH6+vq7TDa6SjO7STK5SDG3SDK3RzH////69PP16efv3trr087myMLhvbfhvLXcsqnYp53UnZHQk4bOkYTKh3nFfG3Eemu/cF++aFa7ZVLMW0PLWkLKWUHHWkLJWkLJWEC4XEi6XErJV0DHV0DFWELHWEDFWEDIVj7HVj7EV0DFVkC3WkjHVT7DVj/BVkDBVj/CVj7GVDzBVT7DVT+/VkC/Vj+/VD2+VUC7VUC/VT7FUjvEUjq7VD69VD29VD7EUTq3VD7DUDm7Ujy5UjzDTji3Uj23UTu3UTy3UjzBTja1UTzATDW1UDuzUDu/TDSzTzq+SjMPKiEHAAAAjnRSTlMAESIzMzMzM0REREREREREVVVVVVVmZmZmZmZmd3d3d3eIiIiIiJmZmZmZmZmZqqq7u7u7u8zMzMzM3d3d7u7u7u7u7v//////////////////////////////////////////////////////////////////////////////////////////////////O3FNUAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwMy8xMS8xMyr709MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAKcElEQVR4nN2ci39btRXHr5Q2buKy2WHpNhaXeWN2gOF6Yx6bPW9jNAmPBkJ55EEKeWwJc8KytmmZw9IGNzRNaf/n6XElHd23ZclhnNB+GtuSvv7pnKN7r47wvO+PIfbfGQ7PflDwH2fAQAZH/C9h3jBpFEOsDYElyIC1n2HBaBRk4CiDOI5IWGwoCISLpXK90bwqrdmoV0tFSOM5gKEYiiJfqrWuxlirNpVHAsb2BEkMSjF2JRZCWLtyQepikUVhYDRRaaZR+BNVmZAObCnhSc/A+HKqFtoklZQsVjA8jjFabfeDwaaoek5NkBUOglEOY7Tq09ViwbdidboeFoyg2CARGAgHMZq10hiPVJhDiCeXagEnapfxwChSjgm983o5L9IFTKfYz3L5cl2HLmA8EIl0jivafFAKBqDndC3n5svaLNVG0AAoPge6BGelNoEDqwpLnxfDK9BYDc7PJG9lhsGmZbQC+qtQMVQCF2s+Ui20/Ks1FaIYcuQbQI08xkoHNjzyAn+xn4ueQAGqtMa5Jv2hcA6Mi2paGgojuTMGKGQBX6Rd6N9PfA5UgpOMNS1S2iuUSfVdppij9EEiOKZVwI7iLGJEoeBRFczVfjXh8yKjtj1lkJMASkmKUsP9+ImfxSRHa8wsIQkUkm9biiR7T35Wlxz188Yp2o8hjEfqAU2yciA8rbc0zs9cFoxlIFczRrHvqDJeSgOuE3KhkD1OZUxsrFnRGkcESSELiZ9P25JjUAzVqSRpj6enE399aSiO/jJQNpLWSLokTEWxWPUX9RlIhMdW0oTmn58UcWuNQ5KIKJ5MiWGmx4jvIK3z9jgEyXk/s7VHEvvmH/b1a1+wySE6H2trGTbpowU9YOwZX8CEwxaSviabxqZwEDsBo3ev3KQZn+q5IGV/Yqw6CBgBj/qTU47/opTjXBu6tfVnCiAo23HJhAtS5Z9q8ImxzcEnvwFWv6jvCgXJW3cQOQZZQJIlQUCQxOAalASjWpIkPLg0QVxweFCSyK/LBJkSS4GbiZHj+IvZVEREcFQ/AecN7w6zcEBJWlHC0/cvAA9xJIjuJRGrCFRszJ0gcskBlwOht0V2bzn0EDYWHaoV564As+xSkMBKciE4FpyZvI3L1BQS4a6VoJOQXzBqq2XXIYf/rfki3A7EDYMcH8rMeP639udmPOAkIJs5y6r6aHmY0+A74hKx6ThmPD1EAzmLidUC77g18L315MojimtVcppW1Xji4lXPJOCi2WlaheP5WasAPUEjdO4iwkmivFVdE7WcXRJpJCrLV+F4IMPUhzEz4QH9IVnQ8EvaaUcXqzoHeGbZwEFFeFxXh6OIJ5e2ZlAR33eKQwFhTlJU8QteFmmkMDxFCuFEglQ0DQkE6SByaoatiIe+K4poU4PPzkeCioCpOUtFtKk5Y0UU4HdOkeEkNJSU0PwUP4y1hitSjU7xYtEbliLxix5Yld1fj3jRlwHahdHQrtBa0hf0S8WpsBO7I0m6VBzixTP74nEXz0O9naDDXY6aAebFQ7zB8uTeTStwy+npt5xDuL+KvuXUb8KdSwJvwvVb/vBjCcfPR7THEtqDGpXknac0Hhp1kOADb8pHV66dBMxM6NEVfMyasJFiiyPhYZ6n5sbx7S/M782wP7K3r8Dk6vDJc8ID38AjcIdewgVJeASubQogd5Ig4KqtKOnhClxxJwl/EKBtk0SgYnTVsSThjaPIHSywleZKEhTaSouElXUBjjYXdUFG4nc54XarA0mC261x84+AJJNuSOgQl4QgcZsPzrfk/XIdbUs+AVgWKdj2V72WJemZf2TZhuX6EaSXbcR+GAULWWxy0PvJCVjIklJRc04r7bFXY+Rh4iCytCdlV4hJ4qDYCfmLnV7slEpivfxLcIhCzErqrPPJGRFVn5YK4gSHf09FC+LSt+uYJONtjWRAEMHhZ7JMJYKCRMSwJBmABflVTkKP5IKrYLMpWyRIJDKhR+YyUo/VtUuHHbCwVnLIguFq5slGfPmTJbmDlhojrRJcVA1lRAEXuFrxdX8skkMrvu4nDpGuZvuyrM7vA4V7GzsxJcvRr/SXmUS8vSja0wL9/lCQ4gAF+i/2nyFZH7n3ZBftS7iPM2bczbgc4FTMe7n+Odjc5g6vz8he9EMcCSu40IJh5JUcM9cPcyZ5mvZz5/CjOdkRP9aCAUuoSxTEAGeV5j46vJMzKMRgz7lu3jn89Jrqix/00XTRfiBF8KDPtU8P79zERiUyCOW2CMnJ+zOgv9pYxNEn8QdS4Al4cmvm/RPCsYWxQVqkHa4Tkm7vxtugS34YLHi6Vxk/+ZovN2Cbt2/0uoRjHWOTBE06XVnf2tnvHp5cn4XdguNxWEdgEKHjcbPXTw67+ztb6ytmtTqk609WVtZ3bnW7vZN3Z7S+5YHBwHlBPHY5eGBw5t2TXrd7a2d9ZeUTY5AlRnJzv9vr3ZgPoFxlRyjLhWKxwP9MRx2hnJm/0et1928yjiVjkFVGQqeHiPJ5BEqKzcx/TuVg00I4lkx8lYEsLy4RFEKyS1C+OX68MJc+uLK5hcfH3xCMXcpBMBYXjRVZXGQkDOVut3t0fPrhtdl0Amqz1z48PT7qdu/uCjkWKYihIhyEkqzv7Nza7x71jk8eZ2AhFI9PjntH3f1bOzvrlEOAGPsIteXl5ZWNzc3O7t5XB1SV0ycfL7wTO0lz7yx8/OSUqnHw1d5uZ3NzY4V0wDoy9xEOolA6u3cpy9EDAvPkg4X5t94E4sy++db8wgdPCMSDI0pxd7ejYyyZR82SNIaysblFZKEsBIYoQ3Gg0VeOCQSlIGJsbW5oGINEDbDV1dWNtbWtTmdvb+/2wcH9+0dEmQcPTqWRX8hL9+8fHNwmH+l0ttbWNkgj2IexIp8tL4dYiCqdLygMoSE40MgLtynEF4RiM0TBQAwVCYBIXSgMo2FA3PhvhIFCRFEMoshqlK1R294mI3b+HTD62vY2+0BkU/OoibM137Y1E6/GNjNW5B+xXUIaaIkNzBX552d2zTxqrIMYKmIfxFCRf/3drhkrYh/ENGosm3nUWDZjRb60DmKoiH0Q06ixbOZRYx3EUJH/WAcxVOS/1kH+333kS8tmrMg96yCGitgHMY0ay2YeNZbNWJGvrYMYKvLwnl0zjxrrIIaK2AcxVMT+1Bgq8vDrTPbnX7786F6WD5pHTSaMX+RyuR+8lAXFWJGsGNSeyYBirMijLBg4xx48M5SUuTRW5NHDRGMY/nYSR3n528QG5lGTZL//ucTwJMqzv00GMVQkCePHOcqBxGYy346kKL9xoEis0EEM/vlUFGNFYkCiMDKpYh41UfbaT4RvROwuSlVejWpqHjVhe/Vn8RislVDlp69FgRgq8jSE8aNkDN7OR3kuhGKsyNNvNftdBgzWUqjy3B/1DsyjxgSDtxUof9BBDDgCIAAj05ZpJIq5j/gd/OWVZxVG9vYUhQT6C38bWJGnzP76yg/7x9BQfvUG78lcEYbxjBlGBIqZIh4FGQhDQ3nhT+aKoDd+fXEwDICCc8+/btgN8v8HvQNhKBTWk2l7GxWCEiU5A/0PYZ7NGGeQkPAAAAAASUVORK5CYII=) no-repeat;
+			background-size: contain;
+			width: 3.6rem;
+			height:2.3rem;
+			position: absolute;
+			left:20px;
+			top:20px;
+			padding-top: 90px;
+			font-size: 16px;
+			color: #fff;
+		}
+		.logo-wrp .username{
+			padding-top:0.56rem;
+			font-size: 0.3rem;
+		}
+		.logo-wrp .logo-rank{
+			position: absolute;
+			text-align: center;
+			font-size: 10px;
+			margin-left: 7px;
+		}
+		.quick-menu{
+			height: 100%;
+			font-size: 12px;
+		}
+		.quick-menu .am-list{
+			margin-bottom: 12px;
+		}
+		.quick-menu .am-list>li>a{
+			padding: 5px 10px;
+			-webkit-tap-highlight-color: rgba(240,240,240,0.7);
+			color: #E5428C;
+			height: 40px;
+			line-height: 30px;
+			font-size: 14px;
+
+		}
+		.quick-menu .am-list>li>a:visited{
+			color: #E5428C;
+		}
+
+		.quick-menu .am-list>li>a>i.icon{
+			margin-right: 8px;
+		}
+
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+			padding: 5px 16px;
+			min-height: 20px;
+			margin-bottom: 0px;
+		}
+		.user-banner{
+			background-size: contain;
+			text-align: right;
+			background:url(__IMG__/user-banner/bg.jpg?v=1.0) repeat;
+			height: 90px;
+		}
+		.user-banner img{
+			height: 90px;
+		}
+
+
+
+		.a_more:hover{color: #666;text-decoration: none;}
+		.a_more:link{color: #666;text-decoration: none;}
+		.a_more:active{color: #666;text-decoration: none;}
+		.a_more:visited{color: #666;text-decoration: none;}
+
+
+		.span_g{padding-top:0.3rem;padding-bottom:0.3rem;padding-left:5px;font-weight: bold;font-size: 0.3rem}
+		.span_more{margin-left: 65%;font-size:0.3rem}
+
+		.theme-shop {display:none;}
+		.theme-shop.domloaded{display: block}
+
+		.dl_product{
+			width:100%;float:left;margin-top:10px;margin-bottom:10px;background-color:white;padding:10px;
+		}
+		.dl_product dt img{width:3.0rem;height:3.0rem;float:left;margin-right:20px;}
+		.dl_product dd.dd_quantity{color:#ccc;font-size:0.3rem;margin-top:1rem;}
+		.dl_product dd.dd_price{color:#FF6700;font-size:0.5rem;}
+		.dl_product dd.dd_price del{color:#ccc;font-size:0.3rem;}
+
+		.a_product:link{color:#000; text-decoration:none}
+		.a_product:visited{color:#000; text-decoration:none}
+		.a_product:hover{color:#000; text-decoration:none}
+		.a_product:active{color:#000; text-decoration:none}
+		.div_recommend{background-color:white;float:left;width:100%;margin-top:0.2rem;padding-top:0.2rem;margin-bottom:.2rem;}
+		.dl_recommend{float:left;margin-left:0.25rem}
+		.dl_recommend .dd_price{font-size: 0.3rem;color:#FF6700;}
+		.dl_recommend .dd_price del{font-size: 0.2rem;color:#CCC;}
+
+
+		.div_new{background-color:white;float:left;width:100%;margin-top:0.2rem;padding-top:0.2rem;margin-bottom:.2rem;}
+		.dl_new{float:left;margin-left:0.25rem}
+		.dl_new .dd_price{font-size: 0.3rem;color:#FF6700;}
+		.dl_new .dd_price del{font-size: 0.2rem;color:#CCC;}
+	</style>
+
+</head>
+<body class="theme-default theme-shop ">
+
+<if condition=" $isDistributor ">
+	<eq name="isStore" value="1">
+		<include file="style2/partial/user_logo" />
+	</eq>
+</if>
+<div class="div_video" style="width:100%;margin-top: 10px;margin-bottom: 10px">
+	<volist name="adsVideo" id="adv">
+        {:htmlspecialchars_decode($adv['url'])}
+    </volist>
+
+
+</div>
+<!--
+<header class="am-header am-header-default grid">
+    <div class="logo col-2">
+    <a href="{:U('Shop/Index/index')}" >
+      <img src="__IMG__/static/logo.png?v=2" alt="logo"  />
+    </a>
+  </div>
+
+
+
+
+
+  <div class="js_top_search top-search-wrp col-10">
+      <span class="i-search"><i class="am-icon-search"></i>搜索商品、店铺</span>
+      <input disabled="disabled" type="text" class="am-form-control top-search " value="" name="q" />
+  </div>
+</header>
+-->
+
+<div data-am-widget="slider" class="am-slider am-slider-a5" data-am-slider='{&quot;directionNav&quot;:false}'>
+	<ul class="am-slides">
+		<volist name="banners" id="vo">
+			<li>
+				<a href="<empty name='vo.url'>#<else/>{$vo['url']}</empty>">
+					<img src='{$vo.img}'  alt="{$vo.title}"  style="height:3rem"/>
+				</a>
+			</li>
+		</volist>
+	</ul>
+</div>
+<!---->
+<!--<div class="store_types grid " style="display: none;">-->
+<!--<volist name="store_types" id="vo">-->
+<!--<div class="type-item col-3">-->
+<!--<a href="{:U('Shop/Wxstore/search',array('cate_id'=>$vo['id']))}">-->
+<!--<img  src="{$vo.iconurl}" class="lazy" alt="{$vo.name}" />-->
+<!--<span>{$vo.name}</span>-->
+<!--</a>-->
+<!--</div>-->
+<!--</volist>-->
+<!--</div>-->
+
+<div class="top-line">
+	<!--TODO: 头条新闻-->
+</div>
+
+
+
+<div class="demo">
+	<!--
+        作者：hebiduhebi@126.com
+        时间：2015-04-23
+        描述：TODO 活动
+    --></div>
+
+
+
+
+<!--
+    作者：hebiduhebi@126.com
+    时间：2015-04-22
+    描述：首页嵌入广告02
+-->
+<!--
+<neq name="new_products" value="-1">
+<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
+	<span style="background:green; padding:0.3rem 0.1rem;"></span>
+	<span class="span_g">最新商品</span>
+</div>
+
+	<div class="product-list grid">
+		<volist name="new_products" id="vo">
+		<div class="product-wrp col-6">
+			<div class="product-item">
+				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
+					<div class="p-name" >{$vo.name}</div>
+					<div class="p-price"style="">¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
+					<i class="zk" style="background:green">New！！！</i>
+				</a>
+			</div>
+		</div>
+		</volist>
+	</div>
+
+</neq>
+
+-->
+<!--
+<neq name="hot_products" value="-1">
+<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
+	<span style="background:red; padding:0.3rem 0.1rem;"></span>
+	<span class="span_g">热门商品</span>
+</div>
+<div class="product-list grid">
+	<volist name="hot_products" id="vo">
+		<div class="product-wrp col-6">
+			<div class="product-item">
+				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
+					<div class="p-name" >{$vo.name}</div>
+					<div class="p-price" >¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
+					<i class="zk">Hot！！！</i>
+				</a>
+			</div>
+		</div>
+	</volist>
+</div>
+</neq>
+
+-->
+<!--
+<neq name="recommend_products" value="-1">
+<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
+	<span style="background:blue; padding:0.3rem 0.1rem;"></span>
+	<span class="span_g">推荐商品</span>
+	<a  class="a_more" href="{:U('Shop/Product/search',array('g_id'=>$g_id_recommend))}"><span  class="span_more">更多<span class="am-icon-caret-square-o-right" style="color:blue;"></span></span>
+	</a>
+</div>
+<div class="product-list grid">
+	<volist name="recommend_products" id="vo">
+		<div class="product-wrp col-6">
+			<div class="product-item">
+				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
+					<div class="p-name" >{$vo.name}</div>
+					<div class="p-price" >¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
+					<i class="zk"  style="background: blue">{:number_format(10.0*($vo['price']/$vo['ori_price']),1)}折</i>
+				</a>
+			</div>
+		</div>
+	</volist>
+</div>
+</neq>
+
+-->
+
+<neq name="recommend_products" value="-1">
+	<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
+		<i class="am-icon-coffee" style="color:#804040;margin-left:.2rem"></i>
+		<span class="span_g">推荐商品</span>
+	</div>
+	<div class="div_recommend">
+		<volist  name="recommend_products" id="vo">
+			<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+				<dl class="dl_recommend">
+					<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" style="width:3.0rem;height:3.0rem" class="lazy" alt="{$vo.name}"/></dt>
+					<dd>{$vo['name']|subtext=5}</dd>
+					<dd class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del></dd>
+				</dl>
+			</a>
+		</volist>
+	</div>
+</neq>
+
+<neq name="new_products" value="-1">
+	<div style="width: 100%;margin-top:2rem;background: white;padding-top:0.2rem;padding-bottom:0.2rem;clear:both;">
+		<i class="am-icon-coffee" style="color:#804040;margin-left:.2rem"></i>
+		<span class="span_g">最新商品</span>
+	</div>
+	<div class="div_new">
+		<volist  name="new_products" id="vo">
+			<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+				<dl class="dl_new">
+					<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" style="width:3.0rem;height:3.0rem" class="lazy" alt="{$vo.name}"/></dt>
+					<dd>{$vo['name']|subtext=5}</dd>
+					<dd  class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del></dd>
+				</dl>
+			</a>
+		</volist>
+	</div>
+</neq>
+
+
+<div style="width: 100%;background: white;padding-top:0.2rem;padding-bottom:0.2rem;clear:both;">
+	<i class="am-icon-coffee" style="color:#804040;margin-left:.2rem"></i>
+	<span class="span_g">热门商品</span>
+</div>
+
+<volist name="hot_products" id="vo">
+	<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
+		<dl class="dl_product">
+			<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></dt>
+			<dd>{$vo['name']|subtext=15}<dd>
+			<dd class="dd_quantity">库存：{$vo.quantity}件<dd>
+			<dd class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del><dd>
+		</dl>
+	</a>
+</volist>
+
+
+<br/>
+<volist name="ads" id="ad">
+	<div class="ad">
+		<a href="{$ad.url}" ><img src="{$ad.img|default='__IMG__/ad_default.jpg?v=1.0'}" alt="{$ad.title}" /></a>
+	</div>
+</volist>
+
+
+<include  file="style2/partial/footermenu" />
+<footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
+	<div class="am-footer-switch">
+	</div>
+	<div class="am-footer-miscs ">
+		<p>由
+			<a href="http://www.itboye.com" title="杭州博也网络科技" target="_blank" class="">杭州博也网络科技</a>提供技术支持</p>
+		<p>&copy;2013-{:date('Y')} Version {:C('APP_VERSION')} {:C('WEBSITE_OWNER')}</p>
+		<p>{:C('WEBSITE_ICP')}</p>
+		<p>{__RUNTIME__}</p>
+	</div>
+</footer>
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+	<a href="#top" title="回到顶部">
+		<span class="am-gotop-title">顶部</span>
+		<i class="am-gotop-icon am-icon-chevron-up"></i>
+	</a>
+</div>
+
+
+<script type="text/javascript">
+	function appendItem(item){
+		//TODO: 首页商品加载
+	}
+	function appendList(){
+		if(window.ajaxing ){
+			console.log("cache");
+			return ;
+		}
+		window.ajaxing = false;
+		$.ajax({
+			type:'post',
+			url:"{:U('Shop/Product/search')}",
+			data:{p:window.myshop.p},
+			dataType:"json",
+			beforeSend:function(){
+				window.ajaxing = true;
+			}
+		}).always(function(){
+			window.ajaxing = false;
+		}).done(function(data){
+
+			if(data.status){
+				window.myshop.p++;
+				if(data.info){
+					for(var i=0;i<data.info.length;i++){
+						console.log(data.info[i]);
+						appendItem(data.info[i]);
+					}
+
+				}else{
+					//TODO: 没有数据了
+
+				}
+
+
+			}else{
+				alertMsg(data.info);
+			}
+		});
+	}
+
+
+	$(function(){
+		$(".start-page").height($(window).height());
+		$(".start-page").css("top",$(window).scrollTop());
+
+		$(".js_top_search").on("tap",function(){
+			window.location.href = "{:U('Shop/Product/search')}";
+		});
+		$(".js_top_search").on("click",function(){
+			window.location.href = "{:U('Shop/Product/search')}";
+		});
+		$("img.lazy").lazyload({effect : 'fadeIn'});
+
+
+		window.myshop = { p : 1 };
+		$(window).on("scroll",function(ev){
+			if($(document).height() - $(window).height() - $(window).scrollTop() < 50){
+//					console.log("trigger");
+				appendList();
+			}
+//				console.log(ev);
+		});
+	})
+
+</script>
+
+<script type="text/html" src="{:U('Tool/Task/index')}"></script>
+</body>
+</html>

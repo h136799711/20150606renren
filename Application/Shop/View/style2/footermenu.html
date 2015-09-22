@@ -1,0 +1,39 @@
+
+<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default "
+id="">
+  <ul class="am-navbar-nav am-cf am-avg-sm-4">
+    <li>
+      <a href="{:U('Shop/Index/index')}" class="">
+        <i class="am-icon-home"></i>
+        <span class="am-navbar-label">首页</span>
+      </a>
+    </li>
+    <li>
+    <if condition="$userinfo.groupid neq 1">
+      <a href="{:U('Shop/Index/myStore')}" class="">
+       <i class="am-icon-users"></i>
+        <span class="am-navbar-label">我的小店</span>
+      </a>		
+    	
+    	<else />
+      <a href="{:U('Shop/Index/distributor')}" class="">
+       <i class="am-icon-users"></i>
+        <span class="am-navbar-label">分销中心</span>
+      </a>
+  
+      </if>
+    </li>
+    <li>
+      <a href="{:U('Shop/ShoppingCart/index')}" class="">
+        <i class="am-icon-shopping-cart"></i>
+        <span class="am-navbar-label">购物车</span>
+      </a>
+    </li>
+    <li ><!-- data-am-navbar-share -->
+      <a href="{:U('Shop/User/info')}" class="">
+        <i class="am-icon-user"></i>
+        <span class="am-navbar-label">个人中心</span>
+      </a>
+    </li>
+  </ul>
+</div>

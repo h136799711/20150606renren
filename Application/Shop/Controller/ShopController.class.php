@@ -55,7 +55,7 @@ class ShopController extends  Controller {
         $this->assign("wxaccount",$this->wxaccount);
 
         //TODO: 商城模板切换
-        $this->themeType = "style1";
+        $this->themeType = "style2";
 	}
 	
 	//获取测试用户信息，用于PC端测试使用

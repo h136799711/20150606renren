@@ -1,0 +1,45 @@
+<extend name="template/base_index" />
+<block name="area_header">
+	 <base href="{:C('SITE_URL')}/" />
+
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="__CSS__/withdraw.css?v=__APP_VERSION__"/>
+	<style type="text/css">
+		
+		.header .am-topbar{
+			font-size: 0.4rem;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+	</style>
+	<script type="text/javascript">
+		function toURL(url){
+			window.location.href=url;	
+		}
+	</script>
+</block>
+<block name="area_body">
+		<div class="header">
+			<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;个人中心</a></div>
+		</div>
+		<div class="div_main">
+			<ul>
+				<li ><font class="am-icon-jpy" style="font-size:3rem;color:#FADB05;"></font></li>
+				<li class="li_info"><font>我的余额</font></li>
+				<li class="li_info"><font class="am-icon-jpy"></font>{$wallet['account_balance']/100|number_format=###, 2,'.',''}</li>
+				<!--<font class="am-icon-jpy"></font><br  />
+				<font>我的余额</font><br  />
+				<font>￥0.00</font><br  />-->
+				<li class="li_btn"><button type="button" class="am-btn am-btn-primary am-btn-block" style="height: 1rem;padding: 0;font-size: 0.4rem;" onclick="toURL('{:U('Shop/User/add')}')">提现</button></li>
+				<li class="li_btn"><button type="button" class="am-btn am-btn-default am-btn-block" style="height: 1rem;padding: 0;font-size: 0.4rem;" onclick="toURL('{:U('Shop/User/withdrawRecord')}')">提现记录</button></li>
+				<li class="li_mingxi"><a href="#">余额明细</a></li>
+			
+			</ul>
+		</div>
+		
+</block>		
+
+<block name="area_footer">
+
+</html>

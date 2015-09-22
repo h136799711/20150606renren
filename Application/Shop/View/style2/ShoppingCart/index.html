@@ -1,0 +1,281 @@
+<extend name="template/base_index2" />
+
+<block name="area_header">
+	<style type="text/css">
+		html{
+			font-size: 10px;
+		}
+		.header{
+			background: #FFFFFF;
+			margin-bottom: 15px;
+		}
+		.header{
+			font-size: 16px;
+		}
+		.header .am-topbar{
+			font-size: 18px;
+  			padding: 5px 16px;
+  			min-height: 20px;
+  			margin-bottom: 0px;
+		}
+		/**
+		 * 购物车样式
+		 */
+		.shopping-cart{
+			font-size: 14px;
+			text-align: center;
+		}
+		.shopping-cart .empty{
+			color: #666666;
+		}
+		
+		.shopping-cart .store-info{
+			padding: 10px 15px;
+			background: #FFFFFF;
+		}
+		.shopping-cart .product-list{
+			background: #FEFEFE;
+			margin-bottom: 20px;
+		}
+		.shopping-cart .product-list .product-item{
+			position: relative;
+			padding: 10px 15px;
+			border-bottom: 1px solid #FFFFFF;
+		}
+		.shopping-cart .product-list .product-item .item-desc{
+			  width: 100%;
+			  padding-left: 60px;
+			  font-size: 12px;
+		}
+		.shopping-cart .product-list .product-item .item-desc>div{
+			width:100%;
+		}
+		
+		.shopping-cart .product-list .product-item .js_btn_del{
+		  	height: 100%;
+			background: #f40;
+			display: block;
+			color: #fff;
+			width: 48px;
+			text-align: center;
+			top: 0px;
+			float: right;
+			line-height: 68px;
+			position: absolute;
+			right: 0px;
+  		}
+  		
+
+  		.shopping-cart .product-edit i{
+  			width:32px;
+  			text-align: center;
+			color: #666666;
+			border: 1px solid #FFFFFF;
+  			float: left;
+  		}
+  		
+  		.shopping-cart .product-edit i.js_plus{
+  			margin-right: 48px;
+  		}
+  		.shopping-cart .product-edit input{
+  		  	text-align: center;
+  			border: 1px solid #EFDDDD;
+  			float: left;
+  		}
+  		.theme-shop .am-gotop-fixed{
+		  width: 32px;
+		  height: 32px;
+		  bottom: 64px;
+  		}
+  		.theme-shop .am-gotop-fixed .am-gotop-icon {
+		  width: 32px;
+		  height: 32px;
+		  line-height: 28px;
+  		}
+  		
+	</style>
+</block>
+
+<block name="area_body">
+	<div class="header">
+		<div class="am-topbar am-topbar-default am-topbar-fixed-top"><a href="javascript:history.back(-1);"><i class="am-icon-chevron-left"></i>&nbsp;&nbsp;我的购物车</a></div>
+	</div>
+	
+	<div class="shopping-cart">
+		<empty name="cart">
+			<div class="empty am-padding-lg"><i class="am-icon-shopping-cart am-icon-lg"></i>&nbsp;&nbsp;&nbsp;购物车为空！</div>
+		<else/>
+		
+		<form class="js_order_form" enctype="multipart/form-data" method="post" action="{:U('Shop/Orders/confirm')}">
+		<volist name="cart"  id="vo">
+			<div class="store-info am-cf">
+				<a class="am-fl" href="{:U('Shop/Wxstore/view',array('id'=>$stores[$key]['id']))}">
+					<i class="am-icon-building am-fl"></i>&nbsp;&nbsp;
+					<span class="am-fl">{$stores[$key]['name']}</span>
+					<i class="am-icon-chevron-right"></i>
+				</a>
+				<a class="js_item_edit am-fr" data-toggle=".js_toggle{$key}" href="javascript:void(0);">编辑</a>
+			</div>
+			<div class="product-list js_toggle{$key}">
+			<volist name="vo" id="item">
+				<div class="product-item am-cf">
+					<!-- 商品ID -->
+					<input type="hidden" class="js_p_id" name="p_id[]" value="{$item['p_id']}" />
+					<!-- 商品SKU -->
+					<input type="hidden" class="js_sku_id"  name="sku_id[]" value="{$item['sku_id']}" />
+					<!-- 商品单价 -->
+					<input type="hidden" class="js_price"  name="price[]" value="{:($item['price']/100.0)}" />
+					<!-- 商品总价 -->
+					<input type="hidden" class="js_count" name="count[]"  value="{$item['count']}" />
+					
+					<div class="am-fl item-img">
+						<a href="{:U('Shop/Product/detail',array('id'=>$item['p_id']))}">
+							<img src="{$item.icon_url}" class="am-fl" style="width: 48px;height: 48px;" />
+						</a>
+					</div>
+					<div class="item-desc">
+							<div class="am-text-truncate am-fl item-name">
+								<a href="{:U('Shop/Product/detail',array('id'=>$item['p_id']))}">{$item.name}</a>
+							</div>
+							<div class="am-text-truncate am-fl am-link-muted am-text-left">{$item.sku_desc}
+							</div>
+						<div class="am-fl"><span class="am-fl am-text-danger ">¥<span class="js_item_total_price">{:($item['price']*$item['count']/100.0)}</span></span><span class="am-fr js_item_cnt">x{$item.count}</span></div>
+					</div>
+					<div class="product-edit am-cf js_product_edit" style="display: none;">
+						<div class="am-fr">
+							<i class="am-icon-minus js_minus"></i> 		
+							<!-- 商品数 -->
+							<input type="text" class="js_val_cnt" style="width: 48px;" value="{$item.count}"  />
+							<i class="am-icon-plus  js_plus"></i>
+						</div>
+						<div class="">
+							<a class="js_btn_del ajax-get confirm" href="{:U('Shop/ShoppingCart/delItem',array('sku_id'=>$item['sku_id'],'s_id'=>$item['storeid'],'p_id'=>$item['p_id']))}">删除</a>
+						</div>
+					</div>
+				</div>
+				
+			</volist>
+			</div>
+			
+		</volist>
+				
+		<div class=" am-padding-sm am-cf">
+			<div style="line-height: 35px;" class="am-fl">合计:<span class="am-text-danger">¥<span class="js_val_total_price"></span></span>
+			不含运费</div>
+			<div class="am-fr">
+				<!--<input type="submit" value="结算" class="am-btn am-btn-sm am-btn-danger"  />-->
+				<button type="submit" class="am-btn am-btn-sm am-btn-danger" >结算</button>
+			</div>			
+		</div>
+		
+		
+		</form>
+		</empty>
+		
+	</div>
+	
+	
+</block>
+
+<block name="area_footer">
+	<include file="style1/partial/footermenu" />
+	<script>
+	//变更商品数目，选择商品时 计算商品总价
+	
+	function countPrice(){
+		var total_price = 0;
+		$(".product-item .js_item_total_price").each(function (index,item){
+			price = parseFloat($(item).text());
+			total_price = total_price + price;
+		});
+		$(".js_val_total_price").text(total_price);
+		$(".js_total_price").val(total_price);
+	}
+	
+	function onEdit(ev){
+		var txt = $(ev.target).text();
+		var cont = $(ev.target).attr("data-toggle");
+		if(txt == "编辑"){
+			showEdit(cont);
+			$(ev.target).text("完成");
+		}else{
+			hideEdit(cont);
+			$(ev.target).text("编辑");
+		}
+	}
+	function showEdit(cont){
+		$(".js_product_edit",cont).show();
+		$(".item-desc",cont).hide();
+	}
+	
+	function hideEdit(cont){
+		$(".js_product_edit",cont).hide();	
+		$(".item-desc",cont).show();	
+	}
+	
+	function onMinus(ev){
+		var pitem = $(ev.target).parents(".product-item");
+		var js_val_cnt = $(pitem).find(".js_val_cnt");
+		var cur = parseInt(js_val_cnt.val());
+		if(cur - 1 > 0){
+			js_val_cnt.val(cur - 1);
+			$(pitem).find(".js_count").val(cur-1);
+			
+			
+			var price = parseFloat($(pitem).find(".js_price").val());
+			var cnt = parseInt($(pitem).find(".js_val_cnt").val());		
+			//变更商品数目,价格
+			$(pitem).find(".js_item_cnt").text(cnt);
+			$(pitem).find(".js_item_total_price").text(price*cnt);
+			
+			countPrice();
+			
+		}
+		
+	}
+	
+	function onPlus(ev){
+		var pitem = $(ev.target).parents(".product-item");
+		var js_val_cnt = $(pitem).find(".js_val_cnt");
+		var cur = parseInt(js_val_cnt.val());
+		js_val_cnt.val(cur + 1);		
+		$(pitem).find(".js_count").val(cur + 1);
+			
+		var pitem = $(ev.target).parents(".product-item");
+		var price = parseFloat($(pitem).find(".js_price").val());
+		var cnt = parseInt($(pitem).find(".js_val_cnt").val());		
+		//变更商品数目,价格
+		$(pitem).find(".js_item_cnt").text(cnt);
+		$(pitem).find(".js_item_total_price").text(price*cnt);
+		
+		countPrice();
+	}
+	
+	$(function(){
+		$(".js_minus").on("tap",function(ev){
+			onMinus(ev);
+		});
+		$(".js_plus").on("tap",function(ev){
+			onPlus(ev);
+		});
+		$(".js_item_edit").on("tap",function(ev){
+			onEdit(ev);
+		});
+		
+		//CLICK测试
+		$(".js_minus").on("click",function(ev){
+			onMinus(ev);
+		});
+		$(".js_plus").on("click",function(ev){
+			onPlus(ev);
+		});
+		$(".js_item_edit").on("click",function(ev){
+			onEdit(ev);
+		});
+				
+		countPrice();
+	})
+		
+	</script>
+</block>
+
