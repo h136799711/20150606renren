@@ -310,6 +310,16 @@
 		.dl_new{float:left;margin-left:0.25rem}
 		.dl_new .dd_price{font-size: 0.3rem;color:#FF6700;}
 		.dl_new .dd_price del{font-size: 0.2rem;color:#CCC;}
+        /*增加文字省略css*/
+        dt+dd{
+            height: 76px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            text-overflow: ellipsis;
+            display: block;
+            width: 3rem;
+            overflow: hidden;
+        }
 	</style>
 
 </head>
@@ -384,86 +394,6 @@
 
 
 
-
-<!--
-    作者：hebiduhebi@126.com
-    时间：2015-04-22
-    描述：首页嵌入广告02
--->
-<!--
-<neq name="new_products" value="-1">
-<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
-	<span style="background:green; padding:0.3rem 0.1rem;"></span>
-	<span class="span_g">最新商品</span>
-</div>
-
-	<div class="product-list grid">
-		<volist name="new_products" id="vo">
-		<div class="product-wrp col-6">
-			<div class="product-item">
-				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
-					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
-					<div class="p-name" >{$vo.name}</div>
-					<div class="p-price"style="">¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
-					<i class="zk" style="background:green">New！！！</i>
-				</a>
-			</div>
-		</div>
-		</volist>
-	</div>
-
-</neq>
-
--->
-<!--
-<neq name="hot_products" value="-1">
-<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
-	<span style="background:red; padding:0.3rem 0.1rem;"></span>
-	<span class="span_g">热门商品</span>
-</div>
-<div class="product-list grid">
-	<volist name="hot_products" id="vo">
-		<div class="product-wrp col-6">
-			<div class="product-item">
-				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
-					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
-					<div class="p-name" >{$vo.name}</div>
-					<div class="p-price" >¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
-					<i class="zk">Hot！！！</i>
-				</a>
-			</div>
-		</div>
-	</volist>
-</div>
-</neq>
-
--->
-<!--
-<neq name="recommend_products" value="-1">
-<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
-	<span style="background:blue; padding:0.3rem 0.1rem;"></span>
-	<span class="span_g">推荐商品</span>
-	<a  class="a_more" href="{:U('Shop/Product/search',array('g_id'=>$g_id_recommend))}"><span  class="span_more">更多<span class="am-icon-caret-square-o-right" style="color:blue;"></span></span>
-	</a>
-</div>
-<div class="product-list grid">
-	<volist name="recommend_products" id="vo">
-		<div class="product-wrp col-6">
-			<div class="product-item">
-				<a href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
-					<div class="p-main-img" ><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></div>
-					<div class="p-name" >{$vo.name}</div>
-					<div class="p-price" >¥{:number_format($vo['price']/100,1)}<del>¥{:number_format($vo['ori_price']/100,1)}</del></div>
-					<i class="zk"  style="background: blue">{:number_format(10.0*($vo['price']/$vo['ori_price']),1)}折</i>
-				</a>
-			</div>
-		</div>
-	</volist>
-</div>
-</neq>
-
--->
-
 <neq name="recommend_products" value="-1">
 	<div style="width: 100%;margin-top: 20px;background: white;padding-top:0.2rem;padding-bottom:0.2rem;">
 		<i class="am-icon-coffee" style="color:#804040;margin-left:.2rem"></i>
@@ -474,7 +404,7 @@
 			<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
 				<dl class="dl_recommend">
 					<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" style="width:3.0rem;height:3.0rem" class="lazy" alt="{$vo.name}"/></dt>
-					<dd>{$vo['name']|subtext=5}</dd>
+					<dd >{$vo['name']}</dd>
 					<dd class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del></dd>
 				</dl>
 			</a>
@@ -492,7 +422,7 @@
 			<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
 				<dl class="dl_new">
 					<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" style="width:3.0rem;height:3.0rem" class="lazy" alt="{$vo.name}"/></dt>
-					<dd>{$vo['name']|subtext=5}</dd>
+					<dd>{$vo['name']}</dd>
 					<dd  class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del></dd>
 				</dl>
 			</a>
@@ -510,7 +440,7 @@
 	<a class="a_product" href="{:U('Shop/Product/detail',array('id'=>$vo['id']))}">
 		<dl class="dl_product">
 			<dt><img src="__IMG__/p240x240.jpg" data-original="{$vo.main_img}" class="lazy" alt="{$vo.name}"/></dt>
-			<dd>{$vo['name']|subtext=15}<dd>
+			<dd>{$vo['name']}<dd>
 			<dd class="dd_quantity">库存：{$vo.quantity}件<dd>
 			<dd class="dd_price">¥{:number_format($vo['price']/100,1)}&nbsp;&nbsp;<del>¥{:number_format($vo['ori_price']/100,1)}</del><dd>
 		</dl>

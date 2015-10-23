@@ -36,8 +36,8 @@ class ShopController extends  Controller {
 		}
 //		C('SHOW_PAGE_TRACE', false);//设置不显示trace
 		$this -> refreshWxaccount();
-		$debug = true;
-		//$debug = false;
+//		$debug = true;
+		$debug = false;
 
 		if($debug){
 			$this->getDebugUser();
